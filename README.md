@@ -101,3 +101,6 @@ private void Error(string type, string answer, object obj)
 - [ ] Реализовать создание заявки на выплату
 - [ ] Реализовать получение баланса группы
 - [ ] Реализация дополнительных функций
+
+* [Связатся со мной](https://vk.com/londonist)
+* [LonDev WebSite](https://londev.ru)
