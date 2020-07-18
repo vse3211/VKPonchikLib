@@ -17,7 +17,7 @@ PM> Install-Package VKPonchikLib
 ```
 **Visual Studio Nuget Manager**
 ```
-Проект -> Свойства -> Управление пакетами Nuget -> Обзор -> Поиск -> VkBotFramework -> Установить
+Проект -> Свойства -> Управление пакетами Nuget -> Обзор -> Поиск -> VKPonchikLib -> Установить
 ```
 
 ### Prerequisites
