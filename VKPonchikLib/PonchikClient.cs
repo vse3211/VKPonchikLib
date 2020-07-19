@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 
 namespace VKPonchikLib
 {
@@ -12,8 +12,12 @@ namespace VKPonchikLib
     //Возможно библиотека будет обновлятся, но это зависит только от вашей поддержки
     //Ваш Londonist (StealthKiller#8719, https://vk.com/londonist)
 
+    /// <summary>
+    /// Основной класс библиотеки
+    /// </summary>
     public class PonchikClient
     {
+        #region Main Values
         /// <summary>
         /// Секретный ключ
         /// </summary>
@@ -22,7 +26,38 @@ namespace VKPonchikLib
         /// Ключ подтверждения
         /// </summary>
         private string _ConfirmKey;
+        /// <summary>
+        /// ID вашей группы
+        /// </summary>
+        private int _GroupID;
+        /// <summary>
+        /// Ваш токен API в приложении
+        /// </summary>
+        private string _APIToken;
+        /// <summary>
+        /// Версия API. Задается библиотекой
+        /// </summary>
+        private int _APIVersion;
+        #endregion
 
+        /// <summary>
+        /// Инициализация приложения
+        /// </summary>
+        /// <param name="GroupID">VKID группы</param>
+        /// <param name="APIToken">Токен приложения</param>
+        /// <param name="SecretKey">Секретный ключ из настроек приложения</param>
+        /// <param name="ConfirmKey">Код подтверждения (Пример: a1b2c3)</param>
+        public PonchikClient(int GroupID, string APIToken, string SecretKey, string ConfirmKey)
+        {
+            _SecretKey = SecretKey;
+            _ConfirmKey = ConfirmKey;
+            _GroupID = GroupID;
+            _APIToken = APIToken;
+            // For API UPDATED
+            _APIVersion = 1;
+        }
+
+        #region CallBack API
         /// <summary>
         /// Обработчик событий для CallBack API
         /// Обрабатывает 3 типа запросов и событие:
@@ -53,18 +88,10 @@ namespace VKPonchikLib
         /// Вызывается при возникновении внутренней ошибки в работе CallBack API
         /// </summary>
         public event CallBackHandler CallBackError;
-
         /// <summary>
-        /// Инициализация приложения
+        /// Принимает и обрабатывает входящий массив от CallBack API
         /// </summary>
-        /// <param name="SecretKey">Секретный ключ из настроек приложения</param>
-        /// <param name="ConfirmKey">Код подтверждения (Пример: a1b2c3)</param>
-        public PonchikClient(string SecretKey, string ConfirmKey)
-        {
-            _SecretKey = SecretKey;
-            _ConfirmKey = ConfirmKey;
-        }
-
+        /// <param name="json">Массив для обработки в виде строки</param>
         public void CallBackInput(string json)
         {
             VKPonchikLib.DonateAnswer.Da DA = VKPonchikLib.DonateAnswer.Da.FromJson(json);
@@ -75,39 +102,39 @@ namespace VKPonchikLib
                 {
                     try
                     {
-                        CallBackNewConfirmation?.Invoke("confirmation", VKPonchikLib.DonateAnswer.Serialize.ToJson(new ConfirmationJSON { Status = "ok", Code = _ConfirmKey }));
+                        CallBackNewConfirmation?.Invoke("confirmation", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "ok", Code = _ConfirmKey }));
                     }
                     catch (Exception ex)
                     {
-                        CallBackError?.Invoke("error", VKPonchikLib.DonateAnswer.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), $"Ошибка обработки confirmation: {ex.Message}");
+                        CallBackError?.Invoke("error", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), $"Ошибка обработки confirmation: {ex.Message}");
                     }
                 }
                 else if (DA.Type == "new_donate")
                 {
                     try
                     {
-                        CallBackNewDonate?.Invoke("new_donate", VKPonchikLib.DonateAnswer.Serialize.ToJson(new ConfirmationJSON { Status = "ok" }), DA.Donate);
+                        CallBackNewDonate?.Invoke("new_donate", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "ok" }), DA.Donate);
                     }
                     catch (Exception ex)
                     {
-                        CallBackError?.Invoke("error", VKPonchikLib.DonateAnswer.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), $"Ошибка обработки new_donate: {ex.Message}");
+                        CallBackError?.Invoke("error", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), $"Ошибка обработки new_donate: {ex.Message}");
                     }
                 }
                 else if (DA.Type == "payment_status")
                 {
                     try
                     {
-                        CallBackNewPaymentStatus?.Invoke("payment_status", VKPonchikLib.DonateAnswer.Serialize.ToJson(new ConfirmationJSON { Status = "ok" }), DA.Payment);
+                        CallBackNewPaymentStatus?.Invoke("payment_status", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "ok" }), DA.Payment);
                     }
                     catch (Exception ex)
                     {
-                        CallBackError?.Invoke("error", VKPonchikLib.DonateAnswer.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), $"Ошибка обработки payment_status: {ex.Message}");
+                        CallBackError?.Invoke("error", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), $"Ошибка обработки payment_status: {ex.Message}");
                     }
                 }
             }
             else
             {
-                CallBackError?.Invoke("error", VKPonchikLib.DonateAnswer.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), "Запрос не прошел проверку");
+                CallBackError?.Invoke("error", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), "Запрос не прошел проверку");
             }
         }
 
@@ -182,19 +209,143 @@ namespace VKPonchikLib
                 else s2 += $",{m[st]}";
             }
             s2 += $",{key}";
-            string hash = VKPonchikLib.DonateAnswer.CustomConverters.ComputeSha256Hash(s2);
+            string hash = VKPonchikLib.Converters.CustomConverters.ComputeSha256Hash(s2);
             if (DA.Hash == hash) return true;
             else
             return false;
         }
+        #endregion
 
+        #region Main API
+        /// <summary>
+        /// Получение списка донатов
+        /// </summary>
+        /// <param name="len">Количество донатов в списке. Максимум 100. По умолчанию 20.</param>
+        /// <param name="offset">Смещение по выборе донатов</param>
+        /// <param name="start_date">Временная метка по UNIX (в миллисекундах). Задает минимальную дату и время выбираемых донатов.</param>
+        /// <param name="end_date">Временная метка по UNIX (в миллисекундах). Задает максимальную дату и время выбираемых донатов.</param>
+        /// <param name="sort">Метод сортировки. По умолчанию date. Возможные значения: date - сортировка по дате; amount - сортировка по сумме.</param>
+        /// <param name="reverse">Направление сортировки. По умолчанию false. Возможные значения: false - сортировка по убыванию; true - сортировка по возрастанию.</param>
+        /// <returns></returns>
+        public VKPonchikLib.GetDonates.Response.JSON GetDonatesList(int len = 20, int offset = -999, int start_date = 0, int end_date = 0, string sort = "date", bool reverse = false)
+        {
+            VKPonchikLib.GetDonates.Request.JSON JSON = new VKPonchikLib.GetDonates.Request.JSON { Group = _GroupID, Token = _APIToken, Version = _APIVersion };
+            if (len != 20) JSON.Len = len;
+            if (offset != -999) JSON.Offset = offset;
+            if (start_date != 0) JSON.StartDate = start_date;
+            if (end_date != 0) JSON.EndDate = end_date;
+            if (sort != "date") JSON.Sort = sort;
+            if (reverse) JSON.Reverse = reverse;
+
+            return VKPonchikLib.GetDonates.Response.JSON.FromJson(SendPostJSON("https://api.vkdonuts.ru/donates/get", VKPonchikLib.Converters.Serialize.ToJson(JSON)));
+        }
+        #endregion
+
+        #region Functions
+        /// <summary>
+        /// Отправляет JSON массив через POST запрос на указанный адрес
+        /// </summary>
+        /// <param name="uri">Ссылка на сервер</param>
+        /// <param name="json">Массив в виде строки</param>
+        /// <returns></returns>
+        public string SendPostJSON(string uri, string json)
+        {
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                streamWriter.Write(json);
+            }
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                return streamReader.ReadToEnd();
+            }
+        }
+        /// <summary>
+        /// Возвращает описание ошибки по ее коду
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public string GetErrorCodeInfo(int code)
+        {
+            switch(code)
+            {
+                case 1000:
+                    return "Неизвестный метод.";
+
+                case 1001:
+                    return "Не переданы обязательные параметры.";
+
+                case 1002:
+                    return "Переданы некорректные значения для некоторых параметров.";
+
+                case 1004:
+                    return "Ошибка авторизации. Проверьте правильность параметров \'group\' и \'token\'.";
+
+                case 1005:
+                    return "Версия API устарела.";
+
+                case 1006:
+                    return "API сервис временно не доступен.";
+
+                case 2000:
+                    return "Превышен лимит обращений к API.";
+
+                case 3000:
+                    return "В данный момент нет активной кампании.";
+
+                case 3001:
+                    return "Кампания с таким ID не найдена.";
+
+                case 3002:
+                    return "Заявка на вывод с таким ID не найдена.";
+
+                case 3003:
+                    return "Донат с таким ID не найден.";
+
+                case 3004:
+                    return "Запрашиваемая сумма выплаты превышает остаток средств на балансе.";
+
+                case 3005:
+                    return "Запрашиваемая сумма выплаты ниже минимальной суммы выплаты для данной платежной системы.";
+
+                case 3006:
+                    return "Ошибка списания средств. Повторите запрос.";
+
+                case 3007:
+                    return "Создание выпдат через API отключено в настройках приложения.";
+
+                case 3008:
+                    return "Время окончания указано неправильно. Кампания не может оканчиваться менее чем через три часа от текущего момента.";
+
+                default:
+                    return $"Ошибка {code} отсутствует в базе библиотеки";
+            }
+        }
+
+        #endregion
     }
 
+    #region CallBack response JSON
+    /// <summary>
+    /// Масив, возвращаемый для CallBack API
+    /// </summary>
     public class ConfirmationJSON
     {
+        /// <summary>
+        /// Состояние обработки запроса
+        /// </summary>
         [JsonProperty("status")]
         public string Status { get; set; }
+        /// <summary>
+        /// Код подтверждения (если нужно)
+        /// </summary>
         [JsonProperty("code", NullValueHandling = NullValueHandling.Ignore)]
         public string Code { get; set; }
     }
+    #endregion
 }

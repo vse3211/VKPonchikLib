@@ -9,92 +9,198 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
+    /// <summary>
+    /// Основной класс
+    /// </summary>
     public partial class Da
     {
+        /// <summary>
+        /// Тип уведомления.
+        /// Возможные значения:
+        /// confirmation - подтверждение страницы при настройке адреса сервера в приложении;
+        /// new_donate - новый донат;
+        /// payment_status - изменение статуса заявки на выплату.
+        /// </summary>
         [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
         public string Type { get; set; }
 
+        /// <summary>
+        /// Объект с информацией о донате.
+        /// </summary>
         [JsonProperty("donate", NullValueHandling = NullValueHandling.Ignore)]
         public Donate Donate { get; set; }
 
+        /// <summary>
+        /// Объект с информацией о заявке на выплату.
+        /// </summary>
         [JsonProperty("payment", NullValueHandling = NullValueHandling.Ignore)]
         public Payment Payment { get; set; }
 
+        /// <summary>
+        /// VK ID группы.
+        /// </summary>
         [JsonProperty("group", NullValueHandling = NullValueHandling.Ignore)]
         public string Group { get; set; }
 
+        /// <summary>
+        /// Хеш запроса. Нужен для проверки того, что уведомление получено от нашего сервера, а не от злоумышленника. Подробнее про проверку хеша читайте в https://vkdonuts.ru/api#callback-hash или воспользуйтесь существующим классом.
+        /// </summary>
         [JsonProperty("hash", NullValueHandling = NullValueHandling.Ignore)]
         public string Hash { get; set; }
     }
 
     #region Donate in Da
+    /// <summary>
+    /// Объект с информацией о донате.
+    /// </summary>
     public partial class Donate
     {
+        /// <summary>
+        /// ID донаты в системе.
+        /// </summary>
         [JsonProperty("id", NullValueHandling = NullValueHandling.Ignore)]
         public int Id { get; set; }
 
+        /// <summary>
+        /// Временная метка по UNIX (в миллисекундах) даты и времени доната.
+        /// </summary>
         [JsonProperty("date", NullValueHandling = NullValueHandling.Ignore)]
         public long Date { get; set; }
 
+        /// <summary>
+        /// Сумма доната в рублях.
+        /// </summary>
         [JsonProperty("amount", NullValueHandling = NullValueHandling.Ignore)]
         public int Amount { get; set; }
 
+        /// <summary>
+        /// Анонимность доната.
+        /// </summary>
         [JsonProperty("anonym", NullValueHandling = NullValueHandling.Ignore)]
         public bool Anonym { get; set; }
 
+        /// <summary>
+        /// Сообщение прикрепленное к донату.
+        /// </summary>
         [JsonProperty("msg", NullValueHandling = NullValueHandling.Ignore)]
         public string Msg { get; set; }
 
+        /// <summary>
+        /// Ответ администратора группы на донат.
+        /// </summary>
         [JsonProperty("answer", NullValueHandling = NullValueHandling.Ignore)]
         public string Answer { get; set; }
 
+        /// <summary>
+        /// Если донат был отправлен через VK Pay, то значение данного поля будет равно true.
+        /// </summary>
         [JsonProperty("vkpay", NullValueHandling = NullValueHandling.Ignore)]
         public bool Vkpay { get; set; }
 
+        /// <summary>
+        /// Статус доната
+        /// Возможные значения:
+        /// new - новый донат;
+        /// public - опубликован;
+        /// hidden - скрыт.
+        /// </summary>
         [JsonProperty("status", NullValueHandling = NullValueHandling.Ignore)]
         public string Status { get; set; }
 
+        /// <summary>
+        /// VK ID пользователя совершившего донат. Если донаты отправлен анонимно, то значение данного поле будет 0.
+        /// </summary>
         [JsonProperty("user", NullValueHandling = NullValueHandling.Ignore)]
         public int User { get; set; }
 
+        /// <summary>
+        /// Если не было выбрано вознаграждение, то данный объект будет пустым.
+        /// </summary>
         [JsonProperty("reward", NullValueHandling = NullValueHandling.Ignore)]
         public Reward Reward { get; set; }
     }
 
+    /// <summary>
+    /// Если не было выбрано вознаграждение, то данный объект будет пустым.
+    /// </summary>
     public partial class Reward
     {
+        /// <summary>
+        /// ID вознаграждения в системе.
+        /// </summary>
         [JsonProperty("id", NullValueHandling = NullValueHandling.Ignore)]
         public int Id { get; set; }
 
+        /// <summary>
+        /// Название вознаграждения.
+        /// </summary>
         [JsonProperty("title", NullValueHandling = NullValueHandling.Ignore)]
         public int Title { get; set; }
 
+        /// <summary>
+        /// Статус выдачи вознаграждения.
+        /// Возможные значения:
+        /// not_sended - не выдано;
+        /// sended - выдано.
+        /// </summary>
         [JsonProperty("status", NullValueHandling = NullValueHandling.Ignore)]
         public int Status { get; set; }
     }
     #endregion
 
     #region Payment in Da
+    /// <summary>
+    /// Объект с информацией о заявке на выплату.
+    /// </summary>
     public partial class Payment
     {
+        /// <summary>
+        /// ID выплаты в системе.
+        /// </summary>
         [JsonProperty("id", NullValueHandling = NullValueHandling.Ignore)]
         public int Id { get; set; }
 
+        /// <summary>
+        /// Статус вывода. 
+        /// created - заявка обрабаывается; 
+        /// ready - заявка выполнена; 
+        /// error - произошла ошибка.
+        /// </summary>
         [JsonProperty("status", NullValueHandling = NullValueHandling.Ignore)]
         public string Status { get; set; }
 
+        /// <summary>
+        /// Временная метка по unix (в миллисекундах) даты и времени обработки заявки.
+        /// </summary>
         [JsonProperty("processed", NullValueHandling = NullValueHandling.Ignore)]
         public int Processed { get; set; }
 
+        /// <summary>
+        /// Платежная система. 
+        /// bank - Банковская карта; 
+        /// qiwi - Qiwi; 
+        /// webmoney - WebMoney; 
+        /// yandex_money - Яндекс.Деньги; 
+        /// mobile - Счет мобильного телефона.
+        /// </summary>
         [JsonProperty("system", NullValueHandling = NullValueHandling.Ignore)]
         public string System { get; set; }
 
+        /// <summary>
+        /// Счет в платежной системе на который заказана выплата.
+        /// </summary>
         [JsonProperty("purse", NullValueHandling = NullValueHandling.Ignore)]
         public string Purse { get; set; }
 
+        /// <summary>
+        /// Сумма выплаты в рублях указанная в заявке.
+        /// </summary>
         [JsonProperty("amount", NullValueHandling = NullValueHandling.Ignore)]
         public int Amount { get; set; }
 
+        /// <summary>
+        /// VK ID пользователя создавшего заявку.
+        /// </summary>
         [JsonProperty("user", NullValueHandling = NullValueHandling.Ignore)]
         public int User { get; set; }
     }
@@ -102,58 +208,29 @@
 
     public partial class Da
     {
-        public static Da FromJson(string json) => JsonConvert.DeserializeObject<Da>(json, DonateAnswer.Converter.Settings);
+        /// <summary>
+        /// Конвертация строки массива в объект
+        /// </summary>
+        /// <param name="json">JSON массив в виде строки</param>
+        /// <returns></returns>
+        public static Da FromJson(string json) => JsonConvert.DeserializeObject<Da>(json, VKPonchikLib.Converters.Converter.Settings);
     }
     public partial class Donate
     {
-        public static Dictionary<string, DonateAnswer.Donate> FromJson(string json) => JsonConvert.DeserializeObject<Dictionary<string, DonateAnswer.Donate>>(json, DonateAnswer.Converter.Settings);
+        /// <summary>
+        /// Конвертация строки массива в объект
+        /// </summary>
+        /// <param name="json">JSON массив в виде строки</param>
+        /// <returns></returns>
+        public static Dictionary<string, DonateAnswer.Donate> FromJson(string json) => JsonConvert.DeserializeObject<Dictionary<string, DonateAnswer.Donate>>(json, VKPonchikLib.Converters.Converter.Settings);
     }
     public partial class Payment
     {
-        public static Dictionary<string, DonateAnswer.Payment> FromJson(string json) => JsonConvert.DeserializeObject<Dictionary<string, DonateAnswer.Payment>>(json, DonateAnswer.Converter.Settings);
-    }
-
-    public static class Serialize
-    {
-        public static string ToJson(object self) => JsonConvert.SerializeObject(self, DonateAnswer.Converter.Settings);
-    }
-
-    internal static class Converter
-    {
-        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
-        {
-            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-            DateParseHandling = DateParseHandling.None,
-            Converters =
-            {
-                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
-            },
-        };
-    }
-
-    public static class CustomConverters
-    {
         /// <summary>
-        /// SHA256 Converter
+        /// Конвертация строки массива в объект
         /// </summary>
-        /// <param name="rawData">Enter string</param>
+        /// <param name="json">JSON массив в виде строки</param>
         /// <returns></returns>
-        public static string ComputeSha256Hash(string rawData)
-        {
-            // Create a SHA256   
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                // ComputeHash - returns byte array  
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                // Convert byte array to a string   
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
-        }
+        public static Dictionary<string, DonateAnswer.Payment> FromJson(string json) => JsonConvert.DeserializeObject<Dictionary<string, DonateAnswer.Payment>>(json, VKPonchikLib.Converters.Converter.Settings);
     }
 }
