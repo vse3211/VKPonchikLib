@@ -30,7 +30,7 @@ VKPonchikLib.PonchikClient Client = new VKPonchikLib.PonchikClient(SecretKey, Co
 ```
 
 ## Example
-Использование библиотеки крайне простое:
+**Использование CallBack API (Рекомендуется использовать в проектах веб-приложения или ASP.NET):**
 
 ```c#
 /* Эвент загрузки страницы ASP.NET */
@@ -86,9 +86,29 @@ private void Error(string type, string answer, object obj)
         
 ```
 
+**Использование Функции GetDonatesList**
+```c#
+VKPonchikLib.GetDonates.Response.JSON Donates = Client.GetDonatesList();
+```
+
+**Использование Функции SendPostJSON**
+```c#
+string response = Client.SendPostJSON("https://example.com/", "{ \"json\" }");
+```
+
+**Использование Функции SendPostJSON**
+```c#
+string response = Client.SendPostJSON("https://example.com/", "{ \"json\" }");
+```
+
+**Использование Функции GetErrorCodeInfo**
+```c#
+string ErrorDescription = Client.GetErrorCodeInfo(IntErrorCode);
+```
+
 ## TODOs
 - [x] Реализовать проверку и использование CallBack API
-- [ ] Реализовать получение списка донатов
+- [x] Реализовать получение списка донатов
 - [ ] Реализовать изменение статуса доната
 - [ ] Реализовать добавление/измение ответа сообщества на донат
 - [ ] Реализовать изменение выдачи вознаграждения
@@ -101,6 +121,9 @@ private void Error(string type, string answer, object obj)
 - [ ] Реализовать создание заявки на выплату
 - [ ] Реализовать получение баланса группы
 - [ ] Реализация дополнительных функций
+- [ ] Публикация ДЕМО проекта с документацией
+- [ ] Полная версия ДЕМО проекта
+- [ ] Полная версия документации
 
 * [Связатся со мной](https://vk.com/londonist)
 * [LonDev WebSite](https://londev.ru)
