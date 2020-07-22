@@ -21,23 +21,23 @@ namespace VKPonchikLib
         /// <summary>
         /// Секретный ключ
         /// </summary>
-        private string _SecretKey;
+        private static string _SecretKey;
         /// <summary>
         /// Ключ подтверждения
         /// </summary>
-        private string _ConfirmKey;
+        private static string _ConfirmKey;
         /// <summary>
         /// ID вашей группы
         /// </summary>
-        private int _GroupID;
+        private static int _GroupID;
         /// <summary>
         /// Ваш токен API в приложении
         /// </summary>
-        private string _APIToken;
+        private static string _APIToken;
         /// <summary>
         /// Версия API. Задается библиотекой
         /// </summary>
-        private int _APIVersion;
+        private static int _APIVersion;
         #endregion
 
         /// <summary>
@@ -218,26 +218,98 @@ namespace VKPonchikLib
 
         #region Main API
         /// <summary>
-        /// Получение списка донатов
+        /// API для работы с донатами
         /// </summary>
-        /// <param name="len">Количество донатов в списке. Максимум 100. По умолчанию 20.</param>
-        /// <param name="offset">Смещение по выборе донатов</param>
-        /// <param name="start_date">Временная метка по UNIX (в миллисекундах). Задает минимальную дату и время выбираемых донатов.</param>
-        /// <param name="end_date">Временная метка по UNIX (в миллисекундах). Задает максимальную дату и время выбираемых донатов.</param>
-        /// <param name="sort">Метод сортировки. По умолчанию date. Возможные значения: date - сортировка по дате; amount - сортировка по сумме.</param>
-        /// <param name="reverse">Направление сортировки. По умолчанию false. Возможные значения: false - сортировка по убыванию; true - сортировка по возрастанию.</param>
-        /// <returns></returns>
-        public VKPonchikLib.GetDonates.Response.JSON GetDonatesList(int len = 20, int offset = -999, int start_date = 0, int end_date = 0, string sort = "date", bool reverse = false)
+        public class Donate
         {
-            VKPonchikLib.GetDonates.Request.JSON JSON = new VKPonchikLib.GetDonates.Request.JSON { Group = _GroupID, Token = _APIToken, Version = _APIVersion };
-            if (len != 20) JSON.Len = len;
-            if (offset != -999) JSON.Offset = offset;
-            if (start_date != 0) JSON.StartDate = start_date;
-            if (end_date != 0) JSON.EndDate = end_date;
-            if (sort != "date") JSON.Sort = sort;
-            if (reverse) JSON.Reverse = reverse;
+            /// <summary>
+            /// Набор функций для работы с донатами
+            /// </summary>
+            /// <param name="GroupID">ID вашей группы</param>
+            /// <param name="APIToken">Ваш токен API в приложении</param>
+            /// <param name="SecretKey">Ваш секретный ключ в приложении</param>
+            /// <param name="ConfirmKey">Ваш код подтверждения в приложении</param>
+            public Donate(int GroupID, string APIToken, string SecretKey, string ConfirmKey)
+            {
+                _SecretKey = SecretKey;
+                _ConfirmKey = ConfirmKey;
+                _GroupID = GroupID;
+                _APIToken = APIToken;
+                // For API UPDATED
+                _APIVersion = 1;
+            }
+            /// <summary>
+            /// Получение списка донатов
+            /// </summary>
+            /// <param name="len">Количество донатов в списке. Максимум 100. По умолчанию 20.</param>
+            /// <param name="offset">Смещение по выборе донатов</param>
+            /// <param name="start_date">Временная метка по UNIX (в миллисекундах). Задает минимальную дату и время выбираемых донатов.</param>
+            /// <param name="end_date">Временная метка по UNIX (в миллисекундах). Задает максимальную дату и время выбираемых донатов.</param>
+            /// <param name="sort">Метод сортировки. По умолчанию date. Возможные значения: date - сортировка по дате; amount - сортировка по сумме.</param>
+            /// <param name="reverse">Направление сортировки. По умолчанию false. Возможные значения: false - сортировка по убыванию; true - сортировка по возрастанию.</param>
+            /// <returns></returns>
+            public VKPonchikLib.Donates.Get.Response.JSON Get(int len = 20, int offset = 0, int start_date = 0, int end_date = 0, string sort = "date", bool reverse = false)
+            {
+                VKPonchikLib.Donates.Get.Request.JSON JSON = new VKPonchikLib.Donates.Get.Request.JSON { Group = _GroupID, Token = _APIToken, Version = _APIVersion };
+                JSON.Len = len;
+                JSON.Offset = offset;
+                JSON.StartDate = start_date;
+                if (end_date != 0) JSON.EndDate = end_date;
+                else JSON.EndDate = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                JSON.Sort = sort;
+                JSON.Reverse = reverse;
 
-            return VKPonchikLib.GetDonates.Response.JSON.FromJson(SendPostJSON("https://api.vkdonuts.ru/donates/get", VKPonchikLib.Converters.Serialize.ToJson(JSON)));
+                string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/donates/get", VKPonchikLib.Converters.Serialize.ToJson(JSON));
+                return VKPonchikLib.Donates.Get.Response.JSON.FromJson(ResponseCache);
+            }
+
+            /// <summary>
+            /// Изменить статус доната
+            /// </summary>
+            /// <param name="id">ID доната в системе.</param>
+            /// <param name="status">Статус доната. Возможные значения: public - опубликован; hidden - скрыт.</param>
+            /// <returns></returns>
+            public VKPonchikLib.NULL.Response.JSON ChangeStatus(int id, string status)
+            {
+                VKPonchikLib.Donates.ChangeStatus.Request.JSON JSON = new Donates.ChangeStatus.Request.JSON { Group = _GroupID, Token = _APIToken, Version = _APIVersion };
+                JSON.ID = id;
+                JSON.Status = status;
+
+                string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/donates/change-status", VKPonchikLib.Converters.Serialize.ToJson(JSON));
+                return VKPonchikLib.NULL.Response.JSON.FromJson(ResponseCache);
+            }
+
+            /// <summary>
+            /// Добавить/изменить ответ сообщества на донат
+            /// </summary>
+            /// <param name="id">ID доната в системе.</param>
+            /// <param name="answer">Текст ответа. Для удаления ответа следует передать пустую строку.</param>
+            /// <returns></returns>
+            public VKPonchikLib.NULL.Response.JSON Answer(int id, string answer)
+            {
+                VKPonchikLib.Donates.Answer.Request.JSON JSON = new Donates.Answer.Request.JSON { Group = _GroupID, Token = _APIToken, Version = _APIVersion };
+                JSON.ID = id;
+                JSON.Answer = answer;
+
+                string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/donates/answer", VKPonchikLib.Converters.Serialize.ToJson(JSON));
+                return VKPonchikLib.NULL.Response.JSON.FromJson(ResponseCache);
+            }
+
+            /// <summary>
+            /// Изменить выдачи вознаграждения.
+            /// </summary>
+            /// <param name="id">ID доната в системе.</param>
+            /// <param name="status">Статус выдачи вознаграждения. not_sended - не вадно; sended - выдано.</param>
+            /// <returns></returns>
+            public VKPonchikLib.NULL.Response.JSON ChangeRewardStatus(int id, string status)
+            {
+                VKPonchikLib.Donates.ChangeRewardStatus.Request.JSON JSON = new Donates.ChangeRewardStatus.Request.JSON { Group = _GroupID, Token = _APIToken, Version = _APIVersion };
+                JSON.ID = id;
+                JSON.Status = status;
+
+                string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/donates/change-reward-status", VKPonchikLib.Converters.Serialize.ToJson(JSON));
+                return VKPonchikLib.NULL.Response.JSON.FromJson(ResponseCache);
+            }
         }
         #endregion
 
@@ -248,7 +320,7 @@ namespace VKPonchikLib
         /// <param name="uri">Ссылка на сервер</param>
         /// <param name="json">Массив в виде строки</param>
         /// <returns></returns>
-        public string SendPostJSON(string uri, string json)
+        public static string SendPostJSON(string uri, string json)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpWebRequest.ContentType = "application/json";
@@ -270,7 +342,7 @@ namespace VKPonchikLib
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        public string GetErrorCodeInfo(int code)
+        public static string GetErrorCodeInfo(int code)
         {
             switch(code)
             {
