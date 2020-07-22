@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанные со сборкой.
 [assembly: AssemblyTitle("VKPonchikLib")]
-[assembly: AssemblyDescription("Библиотека для обработки и использования API донат сервиса Пончик ВКонтакте")]
+[assembly: AssemblyDescription("Библиотека для обработки и использования API донат сервиса Donuts ВКонтакте")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("LonDev")]
 [assembly: AssemblyProduct("VKPonchikLib")]
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2.2.1")]
-[assembly: AssemblyFileVersion("1.2.2.1")]
+[assembly: AssemblyVersion("2.5.2.1")]
+[assembly: AssemblyFileVersion("2.5.2.1")]
