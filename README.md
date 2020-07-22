@@ -20,8 +20,12 @@ PM> Install-Package VKPonchikLib
 Проект -> Свойства -> Управление пакетами Nuget -> Обзор -> Поиск -> VKPonchikLib -> Установить
 ```
 
+### Поддержать разработку проекта
+Данная библиотека распространяется бесплатно, но вы можете [поддержать](https://vk.com/app6887721_-138648450) ее разработку, [отправив](https://vk.com/app6887721_-138648450) средства разработчику
+
 ### Prerequisites
-На данный момент доступно для использования через данную библиотеку только CallBack API, которое рекомендуется к использованию в Web приложениях.
+В библиотеке последней версии реализовано использование CallBack API и отправка запросов к обычному API для получения/изменения информации о донатах
+В следующем обновлении запранирована переработка CallBack API, а также добавление новых функций
 
 #### Использование
 **Создайте экзеспляр класса PonchikClient для дальнейшего использования API**
@@ -34,61 +38,72 @@ VKPonchikLib.PonchikClient Client = new VKPonchikLib.PonchikClient(SecretKey, Co
 
 ```c#
 /* Эвент загрузки страницы ASP.NET */
-protected void Page_Load(object sender, EventArgs e)
+public partial class CallBack : System.Web.UI.Page
 {
     /* Создаем экземпляр класса PonchikClient и передаем ему секретный ключ и код подтверждения */
-    VKPonchikLib.PonchikClient Client = new VKPonchikLib.PonchikClient(SecretKey, ConfirmKey);
-    
-    string json;
-    /* Принимаем входящий поток */
-    using (var reader = new StreamReader(Request.InputStream))
+    VKPonchikLib.PonchikClient Client = new VKPonchikLib.PonchikClient(Base.CDB.GroupID, Base.CDB.APIToken, Base.CDB.SecretKey, Base.CDB.ConfirmKey);
+
+    protected void Page_Load(object sender, EventArgs e)
     {
-        /* Считываем данные в строку */
-        json = reader.ReadToEnd();
+        string json;
+        /* Принимаем входящий поток */
+        using (var reader = new StreamReader(Request.InputStream))
+        {
+            /* Считываем данные в строку */
+            json = reader.ReadToEnd();
+        }
+
+        /* Объявляем функцию для эвента CallBackNewConfirmation */
+        Client.CallBackNewConfirmation += Confirmation;
+        /* Объявляем функцию для эвента CallBackNewDonate */
+        Client.CallBackNewDonate += Donate;
+        /* Объявляем функцию для эвента CallBackNewPaymentStatus */
+        Client.CallBackNewPaymentStatus += PaymentStatus;
+        /* Объявляем функцию для эвента CallBackError */
+        Client.CallBackError += CBError;
+
+        /* Передаем в обработчик CallBack запросов полученный JSON массив */
+        Client.CallBackInput(json);
+    }
+
+    /* Объявляем функцию для обработки запросов типа confirmation */
+    private void Confirmation(string type, string answer)
+    {
+        // Поместите свой код здесь
     }
     
-    /* Объявляем функцию для эвента CallBackNewConfirmation */
-    Client.CallBackNewConfirmation += Confirmation;
-    /* Объявляем функцию для эвента CallBackNewDonate */
-    Client.CallBackNewDonate += Donate;
-    /* Объявляем функцию для эвента CallBackNewPaymentStatus */
-    Client.CallBackNewPaymentStatus += PaymentStatus;
-    /* Объявляем функцию для эвента CallBackError */
-    Client.CallBackError += Error;
+    /* Объявляем функцию для обработки запросов типа new_donate */
+    private void Donate(string type, string answer, object obj)
+    {
+        // Поместите свой код здесь
+    }
     
-    /* Передаем в обработчик CallBack запросов полученный JSON массив */
-    Client.CallBackInput(json);
+    /* Объявляем функцию для обработки запросов типа payment_status */
+    private void PaymentStatus(string type, string answer, object obj)
+    {
+        // Поместите свой код здесь
+    }
+    
+    /* Объявляем функцию для обработки запросов типа error */
+    private void CBError(string type, string answer, object obj)
+    {
+        // Поместите свой код здесь
+    }
 }
-
-/* Объявляем функцию для обработки запросов типа confirmation */
-private void Confirmation(string type, string answer)
-{
-    // Поместите свой код здесь
-}
-
-/* Объявляем функцию для обработки запросов типа new_donate */
-private void Donate(string type, string answer, object obj)
-{
-    // Поместите свой код здесь
-}
-
-/* Объявляем функцию для обработки запросов типа payment_status */
-private void PaymentStatus(string type, string answer, object obj)
-{
-    // Поместите свой код здесь
-}
-
-/* Объявляем функцию для обработки запросов типа error */
-private void Error(string type, string answer, object obj)
-{
-    // Поместите свой код здесь
-}
-        
 ```
 
-**Использование Функции GetDonatesList**
+**Использование Функций PonchikClient.Donate**
 ```c#
-VKPonchikLib.GetDonates.Response.JSON Donates = Client.GetDonatesList();
+/* Создаем новый экземпляр класса Donate */
+var pl = new VKPonchikLib.PonchikClient.Donate(Convert.ToInt32("01234567"), "APIToken", "SecretKey", "ConfirmKey");
+/* Получение списка донатов */
+string GetResult = VKPonchikLib.Converters.Serialize.ToJson(pl.Get());
+/* Изменить статус доната */
+string ChangeStatusResult = VKPonchikLib.Converters.Serialize.ToJson(pl.ChangeStatus(0123456, "Status"));
+/* Добавить/изменить ответ сообщества на донат */
+string AnswerResult = VKPonchikLib.Converters.Serialize.ToJson(pl.Answer(0123456, "Answer"));
+/* Изменить выдачи вознаграждения */
+string ChangeRewardStatusResult = VKPonchikLib.Converters.Serialize.ToJson(pl.ChangeRewardStatus(0123456, "Status"));
 ```
 
 **Использование Функции SendPostJSON**
@@ -109,9 +124,9 @@ string ErrorDescription = Client.GetErrorCodeInfo(IntErrorCode);
 ## TODOs
 - [x] Реализовать проверку и использование CallBack API
 - [x] Реализовать получение списка донатов
-- [ ] Реализовать изменение статуса доната
-- [ ] Реализовать добавление/измение ответа сообщества на донат
-- [ ] Реализовать изменение выдачи вознаграждения
+- [x] Реализовать изменение статуса доната
+- [x] Реализовать добавление/измение ответа сообщества на донат
+- [x] Реализовать изменение выдачи вознаграждения
 - [ ] Реализовать получение списка краудфандинговых кампаний (последние 20 кампаний)
 - [ ] Реализовать получение активной краудфандинговой кампании
 - [ ] Реализовать получение списка вознаграждений краудфандинговой кампании
