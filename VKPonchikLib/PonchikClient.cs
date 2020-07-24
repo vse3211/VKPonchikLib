@@ -226,15 +226,13 @@ namespace VKPonchikLib
             /// Набор функций для работы с донатами
             /// </summary>
             /// <param name="GroupID">ID вашей группы</param>
-            /// <param name="APIToken">Ваш токен API в приложении</param>
             /// <param name="SecretKey">Ваш секретный ключ в приложении</param>
             /// <param name="ConfirmKey">Ваш код подтверждения в приложении</param>
-            public Donate(int GroupID, string APIToken, string SecretKey, string ConfirmKey)
+            public Donate(int GroupID, string SecretKey, string ConfirmKey)
             {
                 _SecretKey = SecretKey;
                 _ConfirmKey = ConfirmKey;
                 _GroupID = GroupID;
-                _APIToken = APIToken;
                 // For API UPDATED
                 _APIVersion = 1;
             }
@@ -308,6 +306,101 @@ namespace VKPonchikLib
                 JSON.Status = status;
 
                 string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/donates/change-reward-status", VKPonchikLib.Converters.Serialize.ToJson(JSON));
+                return VKPonchikLib.NULL.Response.JSON.FromJson(ResponseCache);
+            }
+        }
+        /// <summary>
+        /// API для работы с краудфандинговыми кампаниями
+        /// </summary>
+        public class Campaign
+        {
+            /// <summary>
+            /// Набор функций для работы с краудфандинговыми кампаниями
+            /// </summary>
+            /// <param name="GroupID">ID вашей группы</param>
+            /// <param name="SecretKey">Ваш секретный ключ в приложении</param>
+            /// <param name="ConfirmKey">Ваш код подтверждения в приложении</param>
+            public Campaign(int GroupID, string SecretKey, string ConfirmKey)
+            {
+                _SecretKey = SecretKey;
+                _ConfirmKey = ConfirmKey;
+                _GroupID = GroupID;
+                // For API UPDATED
+                _APIVersion = 1;
+            }
+
+            /// <summary>
+            /// Получить список краудфандинговых кампаний (последние 20 кампаний).
+            /// </summary>
+            /// <param name="IDs">Можно передать массив системных ID кампаний для выборки конкрентных кампаний. Если данный параметр не передан, то вернутся 20 последних кампаний.</param>
+            /// <returns></returns>
+            public VKPonchikLib.Campaigns.Get.Response.JSON Get(int[] IDs = null)
+            {
+                VKPonchikLib.Campaigns.Get.Request.JSON JSON = new Campaigns.Get.Request.JSON { Group = _GroupID, Token = _SecretKey, Version = _APIVersion , IDs = IDs };
+
+                string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/campaigns/get", VKPonchikLib.Converters.Serialize.ToJson(JSON));
+                return VKPonchikLib.Campaigns.Get.Response.JSON.FromJson(ResponseCache);
+            }
+
+            /// <summary>
+            /// Получить активную краудфандинговую кампанию.
+            /// </summary>
+            /// <returns></returns>
+            public VKPonchikLib.Campaigns.GetActive.Response.JSON GetActive()
+            {
+                VKPonchikLib.NULL.Request.JSON JSON = new NULL.Request.JSON { Group = _GroupID, Token = _SecretKey, Version = _APIVersion };
+
+                string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/campaigns/get-active", VKPonchikLib.Converters.Serialize.ToJson(JSON));
+                return VKPonchikLib.Campaigns.GetActive.Response.JSON.FromJson(ResponseCache);
+            }
+
+            /// <summary>
+            /// Получить список вознаграждений краудфандинговой кампании.
+            /// </summary>
+            /// <param name="campaign">ID кампании в системе.</param>
+            /// <returns></returns>
+            public VKPonchikLib.Campaigns.GetRewards.Response.JSON GetRewards(int campaign)
+            {
+                VKPonchikLib.Campaigns.GetRewards.Request.JSON JSON = new Campaigns.GetRewards.Request.JSON { Group = _GroupID, Token = _SecretKey, Version = _APIVersion, Campaign = campaign };
+
+                string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/campaigns/get-active", VKPonchikLib.Converters.Serialize.ToJson(JSON));
+                return VKPonchikLib.Campaigns.GetRewards.Response.JSON.FromJson(ResponseCache);
+            }
+
+            /// <summary>
+            /// Обновить информацию о краудфандинговой кампании.
+            /// </summary>
+            /// <param name="ID">ID кампании в системе.</param>
+            /// <param name="title">Заголовок кампании.</param>
+            /// <param name="status">Статус кампании. draft - черновик; active - активная кампания; archive - кампания архивирована.</param>
+            /// <param name="end">Временная метка по unix (в миллисекундах) окончания кампании.</param>
+            /// <param name="point">Цель по сбору в рублях.</param>
+            /// <param name="StartReceived">Собрано за пределами приложения в рублях.</param>
+            /// <param name="StartBackers">Кол-во спонсоров пожертвовавших за пределами приложения.</param>
+            /// <returns></returns>
+            public VKPonchikLib.NULL.Response.JSON Change(int ID, string title = null, string status = null, long end = 0, int point = 1000, int StartReceived = 0, int StartBackers = 0)
+            {
+                VKPonchikLib.Campaigns.Change.Request.JSON JSON = new Campaigns.Change.Request.JSON { Group = _GroupID, Token = _SecretKey, Version = _APIVersion, ID = ID, Title = title, Status = status, End = end, Point = point, StartReceived = StartReceived, StartBackers = StartBackers };
+
+                string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/campaigns/change", VKPonchikLib.Converters.Serialize.ToJson(JSON));
+                return VKPonchikLib.NULL.Response.JSON.FromJson(ResponseCache);
+            }
+
+            /// <summary>
+            /// Обновить информацию о вознаграждении краудфандинговой кампании.
+            /// </summary>
+            /// <param name="ID">ID вознаграждения в системе.</param>
+            /// <param name="Title">Название вознаграждения.</param>
+            /// <param name="Desc">Описание вознаграждения.</param>
+            /// <param name="MinDonate">Минимальный донат для получения текущего вознаграждения.</param>
+            /// <param name="Limits">Ограничение кол-во вознаграждений. Если ограничений нет, данное поле должно быть равно 0.</param>
+            /// <param name="Status">Статус вознаграждения. public - вознаграждение опубликовано; hidden - вознаграждение скрыто.</param>
+            /// <returns></returns>
+            public VKPonchikLib.NULL.Response.JSON ChangeReward(int ID, string Title = null, string Desc = null, int MinDonate = 100, int Limits = 0, string Status = "hidden")
+            {
+                VKPonchikLib.Campaigns.ChangeReward.Request.JSON JSON = new Campaigns.ChangeReward.Request.JSON { Group = _GroupID, Token = _SecretKey, Version = _APIVersion, ID = ID, Title = Title, Desc = Desc, MinDonate = MinDonate, Limits = Limits, Status = Status };
+
+                string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/campaigns/change-reward", VKPonchikLib.Converters.Serialize.ToJson(JSON));
                 return VKPonchikLib.NULL.Response.JSON.FromJson(ResponseCache);
             }
         }
