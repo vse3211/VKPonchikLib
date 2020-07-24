@@ -106,6 +106,22 @@ string AnswerResult = VKPonchikLib.Converters.Serialize.ToJson(pl.Answer(0123456
 string ChangeRewardStatusResult = VKPonchikLib.Converters.Serialize.ToJson(pl.ChangeRewardStatus(0123456, "Status"));
 ```
 
+**Использование Функций PonchikClient.Campaign**
+```c#
+/* Создаем новый экземпляр класса Donate */
+var plc = new VKPonchikLib.PonchikClient.Campaign(Convert.ToInt32(GIDbox.Text), SecretKeybox.Text, ConfirmKeybox.Text);
+/* Получить список краудфандинговых кампаний (последние 20 кампаний) */
+Base.CDB.result = VKPonchikLib.Converters.Serialize.ToJson(plc.Get(new int[3] { 01234560, 01234561, 01234563 }));
+/* Получить активную краудфандинговую кампанию */
+Base.CDB.result = VKPonchikLib.Converters.Serialize.ToJson(plc.GetActive());
+/* Получить список вознаграждений краудфандинговой кампании */
+Base.CDB.result = VKPonchikLib.Converters.Serialize.ToJson(plc.GetRewards(0123456));
+/* Обновить информацию о краудфандинговой кампании */
+Base.CDB.result = VKPonchikLib.Converters.Serialize.ToJson(plc.Change(0123456, "Title", "Status", 0, 11000, 0, 0));
+/* Обновить информацию о вознаграждении краудфандинговой кампании */
+Base.CDB.result = VKPonchikLib.Converters.Serialize.ToJson(plc.ChangeReward(0123456, "Title", "Desc", 500, 0, "hidden"));
+```
+
 **Использование Функции SendPostJSON**
 ```c#
 string response = Client.SendPostJSON("https://example.com/", "{ \"json\" }");
@@ -127,11 +143,11 @@ string ErrorDescription = Client.GetErrorCodeInfo(IntErrorCode);
 - [x] Реализовать изменение статуса доната
 - [x] Реализовать добавление/измение ответа сообщества на донат
 - [x] Реализовать изменение выдачи вознаграждения
-- [ ] Реализовать получение списка краудфандинговых кампаний (последние 20 кампаний)
-- [ ] Реализовать получение активной краудфандинговой кампании
-- [ ] Реализовать получение списка вознаграждений краудфандинговой кампании
-- [ ] Реализовать обновление информации о краудфандинговой кампании
-- [ ] Реализовать обновление информации о вознаграждении краудфандинговой кампании
+- [x] Реализовать получение списка краудфандинговых кампаний (последние 20 кампаний)
+- [x] Реализовать получение активной краудфандинговой кампании
+- [x] Реализовать получение списка вознаграждений краудфандинговой кампании
+- [x] Реализовать обновление информации о краудфандинговой кампании
+- [x] Реализовать обновление информации о вознаграждении краудфандинговой кампании
 - [ ] Реализовать получение списка заявок на выплату (последние 20 заявок)
 - [ ] Реализовать создание заявки на выплату
 - [ ] Реализовать получение баланса группы
