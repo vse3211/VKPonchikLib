@@ -40,179 +40,187 @@ namespace VKPonchikLib
         private static int _APIVersion;
         #endregion
 
-        /// <summary>
-        /// Инициализация приложения
-        /// </summary>
-        /// <param name="GroupID">VKID группы</param>
-        /// <param name="APIToken">Токен приложения</param>
-        /// <param name="SecretKey">Секретный ключ из настроек приложения</param>
-        /// <param name="ConfirmKey">Код подтверждения (Пример: a1b2c3)</param>
-        public PonchikClient(int GroupID, string APIToken, string SecretKey, string ConfirmKey)
-        {
-            _SecretKey = SecretKey;
-            _ConfirmKey = ConfirmKey;
-            _GroupID = GroupID;
-            _APIToken = APIToken;
-            // For API UPDATED
-            _APIVersion = 1;
-        }
-
         #region CallBack API
         /// <summary>
-        /// Обработчик событий для CallBack API
-        /// Обрабатывает 3 типа запросов и событие:
-        /// confirmation - Возвращает тип и строку для ответа серверу
-        /// new_donate - Возвращает тип, строку для ответа серверу и массив VKPonchikLib.DonateAnswer.Donate в виде объекта для дальнейшего использования
-        /// payment_status - Возвращает тип, строку для ответа серверу и массив VKPonchikLib.DonateAnswer.Payment в виде объекта для дальнейшего использования
-        /// error - Возвращает тип, строку для ответа серверу и причину ошибки в виде String
-        /// 
-        /// Подробнее о типах запросов можно узнать на GitHub проекта и vkdonuts.ru/api#callback
+        /// Класс для подключения CallBack API. Рекомендуется использовать только в приложениях, способных принимать и отправлять http и/или https запросы
         /// </summary>
-        /// <param name="type">Тип ответа/запроса</param>
-        /// <param name="answer">Строка для ответа серверу</param>
-        /// <param name="obj">Объект, приклепленный к событию</param>
-        public delegate void CallBackHandler(string type, string answer, object obj = null);
-        /// <summary>
-        /// Выполняется при входящем запросе подтверждения
-        /// </summary>
-        public event CallBackHandler CallBackNewConfirmation;
-        /// <summary>
-        /// Вызывается при входящем донате
-        /// </summary>
-        public event CallBackHandler CallBackNewDonate;
-        /// <summary>
-        /// Вызывается при входящем выводе средств
-        /// </summary>
-        public event CallBackHandler CallBackNewPaymentStatus;
-        /// <summary>
-        /// Вызывается при возникновении внутренней ошибки в работе CallBack API
-        /// </summary>
-        public event CallBackHandler CallBackError;
-        /// <summary>
-        /// Принимает и обрабатывает входящий массив от CallBack API
-        /// </summary>
-        /// <param name="json">Массив для обработки в виде строки</param>
-        public void CallBackInput(string json)
+        public class CallBack
         {
-            VKPonchikLib.DonateAnswer.Da DA = VKPonchikLib.DonateAnswer.Da.FromJson(json);
-            if (CheckRequest(DA, _SecretKey))
-            {
-                //DA API version "1"
-                if (DA.Type == "confirmation")
-                {
-                    try
-                    {
-                        CallBackNewConfirmation?.Invoke("confirmation", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "ok", Code = _ConfirmKey }));
-                    }
-                    catch (Exception ex)
-                    {
-                        CallBackError?.Invoke("error", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), $"Ошибка обработки confirmation: {ex.Message}");
-                    }
-                }
-                else if (DA.Type == "new_donate")
-                {
-                    try
-                    {
-                        CallBackNewDonate?.Invoke("new_donate", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "ok" }), DA.Donate);
-                    }
-                    catch (Exception ex)
-                    {
-                        CallBackError?.Invoke("error", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), $"Ошибка обработки new_donate: {ex.Message}");
-                    }
-                }
-                else if (DA.Type == "payment_status")
-                {
-                    try
-                    {
-                        CallBackNewPaymentStatus?.Invoke("payment_status", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "ok" }), DA.Payment);
-                    }
-                    catch (Exception ex)
-                    {
-                        CallBackError?.Invoke("error", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), $"Ошибка обработки payment_status: {ex.Message}");
-                    }
-                }
-            }
-            else
-            {
-                CallBackError?.Invoke("error", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), "Запрос не прошел проверку");
-            }
-        }
 
-        /// <summary>
-        /// Конвертация boolean для проверки на подлинность
-        /// </summary>
-        /// <param name="bl">Переменная boolean для конвертации в string</param>
-        /// <returns></returns>
-        private string BoolToStringFC(bool bl)
-        {
-            if (bl) return "1";
-            else return "";
-        }
+            /// <summary>
+            /// Обработчик событий для CallBack API
+            /// Обрабатывает 3 типа запросов и событие:
+            /// confirmation - Возвращает тип и строку для ответа серверу
+            /// new_donate - Возвращает тип, строку для ответа серверу и массив VKPonchikLib.DonateAnswer.Donate в виде объекта для дальнейшего использования
+            /// payment_status - Возвращает тип, строку для ответа серверу и массив VKPonchikLib.DonateAnswer.Payment в виде объекта для дальнейшего использования
+            /// error - Возвращает тип, строку для ответа серверу и причину ошибки в виде String
+            /// 
+            /// Подробнее о типах запросов можно узнать на GitHub проекта и vkdonuts.ru/api#callback
+            /// </summary>
+            /// <param name="type">Тип ответа/запроса</param>
+            /// <param name="answer">Строка для ответа серверу</param>
+            /// <param name="obj">Объект, приклепленный к событию</param>
+            public delegate void Handler(string type, string answer, object obj = null);
+            /// <summary>
+            /// Выполняется при входящем запросе подтверждения
+            /// </summary>
+            public event Handler OnNewConfirmation;
+            /// <summary>
+            /// Вызывается при входящем донате
+            /// </summary>
+            public event Handler OnNewDonate;
+            /// <summary>
+            /// Вызывается при входящем выводе средств
+            /// </summary>
+            public event Handler OnNewPaymentStatus;
+            /// <summary>
+            /// Вызывается при возникновении внутренней ошибки в работе CallBack API
+            /// </summary>
+            public event Handler OnError;
 
-        /// <summary>
-        /// Проверка запроса на подлинность
-        /// </summary>
-        /// <param name="DA">Входящий массив</param>
-        /// <param name="key">Секретный ключ</param>
-        /// <returns></returns>
-        private bool CheckRequest(VKPonchikLib.DonateAnswer.Da DA, string key)
-        {
-            Dictionary<string, string> m = new Dictionary<string, string>();
-            //--- Это можно как-то оптимизировать, но я пока не знаю как.
-            m.Add($"{nameof(DA.Group)}", DA.Group);
-            m.Add($"{nameof(DA.Type)}", DA.Type);
-            //-
-            if (DA.Donate != null && DA.Type == "new_donate")
+            /// <summary>
+            /// Инициализация CallBack API
+            /// </summary>
+            /// <param name="GroupID">VKID группы</param>
+            /// <param name="APIToken">Токен приложения</param>
+            /// <param name="SecretKey">Секретный ключ из настроек приложения</param>
+            /// <param name="ConfirmKey">Код подтверждения (Пример: a1b2c3)</param>
+            public CallBack(int GroupID, string APIToken, string SecretKey, string ConfirmKey)
             {
-                m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Id)}", DA.Donate.Id.ToString());
-                m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.User)}", DA.Donate.User.ToString());
-                m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Date)}", DA.Donate.Date.ToString());
-                m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Amount)}", DA.Donate.Amount.ToString());
-                if (DA.Donate.Msg != null) m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Msg)}", DA.Donate.Msg.ToString());
-                m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Anonym)}", BoolToStringFC(DA.Donate.Anonym));
-                if (DA.Donate.Answer != null) m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Answer)}", DA.Donate.Answer.ToString());
-                m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Vkpay)}", BoolToStringFC(DA.Donate.Vkpay));
-                m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Status)}", DA.Donate.Status.ToString());
-                if (DA.Donate.Reward != null)
+                _SecretKey = SecretKey;
+                _ConfirmKey = ConfirmKey;
+                _GroupID = GroupID;
+                _APIToken = APIToken;
+                // For API UPDATED
+                _APIVersion = 1;
+            }
+
+            /// <summary>
+            /// Принимает и обрабатывает входящий массив от CallBack API
+            /// </summary>
+            /// <param name="json">Массив для обработки в виде строки</param>
+            public void Input(string json)
+            {
+                VKPonchikLib.DonateAnswer.Da DA = VKPonchikLib.DonateAnswer.Da.FromJson(json);
+                if (CheckRequest(DA, _SecretKey))
                 {
-                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Reward)}/{nameof(DA.Donate.Reward.Id)}", DA.Donate.Reward.Id.ToString());
-                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Reward)}/{nameof(DA.Donate.Reward.Title)}", DA.Donate.Reward.Title.ToString());
-                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Reward)}/{nameof(DA.Donate.Reward.Status)}", DA.Donate.Reward.Status.ToString());
+                    //DA API version "1"
+                    if (DA.Type == "confirmation")
+                    {
+                        try
+                        {
+                            OnNewConfirmation?.Invoke("confirmation", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "ok", Code = _ConfirmKey }));
+                        }
+                        catch (Exception ex)
+                        {
+                            OnError?.Invoke("error", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), $"Ошибка обработки confirmation: {ex.Message}");
+                        }
+                    }
+                    else if (DA.Type == "new_donate")
+                    {
+                        try
+                        {
+                            OnNewDonate?.Invoke("new_donate", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "ok" }), DA.Donate);
+                        }
+                        catch (Exception ex)
+                        {
+                            OnError?.Invoke("error", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), $"Ошибка обработки new_donate: {ex.Message}");
+                        }
+                    }
+                    else if (DA.Type == "payment_status")
+                    {
+                        try
+                        {
+                            OnNewPaymentStatus?.Invoke("payment_status", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "ok" }), DA.Payment);
+                        }
+                        catch (Exception ex)
+                        {
+                            OnError?.Invoke("error", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), $"Ошибка обработки payment_status: {ex.Message}");
+                        }
+                    }
+                }
+                else
+                {
+                    OnError?.Invoke("error", VKPonchikLib.Converters.Serialize.ToJson(new ConfirmationJSON { Status = "error" }), "Запрос не прошел проверку");
                 }
             }
-            //-
-            if (DA.Payment != null && DA.Type == "payment_status")
+
+            /// <summary>
+            /// Конвертация boolean для проверки на подлинность
+            /// </summary>
+            /// <param name="bl">Переменная boolean для конвертации в string</param>
+            /// <returns></returns>
+            private string BoolToStringFC(bool bl)
             {
-                m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.Id)}", DA.Payment.Id.ToString());
-                m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.Status)}", DA.Payment.Status.ToString());
-                m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.Processed)}", DA.Payment.Processed.ToString());
-                m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.System)}", DA.Payment.System.ToString());
-                m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.Purse)}", DA.Payment.Purse.ToString());
-                m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.Amount)}", DA.Payment.Amount.ToString());
-                m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.User)}", DA.Payment.User.ToString());
+                if (bl) return "1";
+                else return "";
             }
-            //---
-            List<string> keys = new List<string>();
-            foreach (string k in m.Keys) keys.Add(k);
-            IEnumerable<string> auto = keys.OrderByDescending(s => s);
-            string[] s1 = new string[auto.Count()];
-            int i = auto.Count() - 1;
-            foreach (string st in auto)
+
+            /// <summary>
+            /// Проверка запроса на подлинность
+            /// </summary>
+            /// <param name="DA">Входящий массив</param>
+            /// <param name="key">Секретный ключ</param>
+            /// <returns></returns>
+            private bool CheckRequest(VKPonchikLib.DonateAnswer.Da DA, string key)
             {
-                s1[i] = st;
-                i--;
+                Dictionary<string, string> m = new Dictionary<string, string>();
+                //--- Это можно как-то оптимизировать, но я пока не знаю как.
+                m.Add($"{nameof(DA.Group)}", DA.Group);
+                m.Add($"{nameof(DA.Type)}", DA.Type);
+                //-
+                if (DA.Donate != null && DA.Type == "new_donate")
+                {
+                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Id)}", DA.Donate.Id.ToString());
+                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.User)}", DA.Donate.User.ToString());
+                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Date)}", DA.Donate.Date.ToString());
+                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Amount)}", DA.Donate.Amount.ToString());
+                    if (DA.Donate.Msg != null) m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Msg)}", DA.Donate.Msg.ToString());
+                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Anonym)}", BoolToStringFC(DA.Donate.Anonym));
+                    if (DA.Donate.Answer != null) m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Answer)}", DA.Donate.Answer.ToString());
+                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Vkpay)}", BoolToStringFC(DA.Donate.Vkpay));
+                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Status)}", DA.Donate.Status.ToString());
+                    if (DA.Donate.Reward != null)
+                    {
+                        m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Reward)}/{nameof(DA.Donate.Reward.Id)}", DA.Donate.Reward.Id.ToString());
+                        m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Reward)}/{nameof(DA.Donate.Reward.Title)}", DA.Donate.Reward.Title.ToString());
+                        m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Reward)}/{nameof(DA.Donate.Reward.Status)}", DA.Donate.Reward.Status.ToString());
+                    }
+                }
+                //-
+                if (DA.Payment != null && DA.Type == "payment_status")
+                {
+                    m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.Id)}", DA.Payment.Id.ToString());
+                    m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.Status)}", DA.Payment.Status.ToString());
+                    m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.Processed)}", DA.Payment.Processed.ToString());
+                    m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.System)}", DA.Payment.System.ToString());
+                    m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.Purse)}", DA.Payment.Purse.ToString());
+                    m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.Amount)}", DA.Payment.Amount.ToString());
+                    m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.User)}", DA.Payment.User.ToString());
+                }
+                //---
+                List<string> keys = new List<string>();
+                foreach (string k in m.Keys) keys.Add(k);
+                IEnumerable<string> auto = keys.OrderByDescending(s => s);
+                string[] s1 = new string[auto.Count()];
+                int i = auto.Count() - 1;
+                foreach (string st in auto)
+                {
+                    s1[i] = st;
+                    i--;
+                }
+                string s2 = null;
+                foreach (string st in s1)
+                {
+                    if (String.IsNullOrWhiteSpace(s2)) s2 = m[st];
+                    else s2 += $",{m[st]}";
+                }
+                s2 += $",{key}";
+                string hash = VKPonchikLib.Converters.CustomConverters.ComputeSha256Hash(s2);
+                if (DA.Hash == hash) return true;
+                else
+                    return false;
             }
-            string s2 = null;
-            foreach (string st in s1)
-            {
-                if (String.IsNullOrWhiteSpace(s2)) s2 = m[st];
-                else s2 += $",{m[st]}";
-            }
-            s2 += $",{key}";
-            string hash = VKPonchikLib.Converters.CustomConverters.ComputeSha256Hash(s2);
-            if (DA.Hash == hash) return true;
-            else
-            return false;
         }
         #endregion
 
@@ -267,14 +275,14 @@ namespace VKPonchikLib
             /// <param name="id">ID доната в системе.</param>
             /// <param name="status">Статус доната. Возможные значения: public - опубликован; hidden - скрыт.</param>
             /// <returns></returns>
-            public VKPonchikLib.NULL.Response.JSON ChangeStatus(int id, string status)
+            public VKPonchikLib.Response.Default.JSON ChangeStatus(int id, string status)
             {
                 VKPonchikLib.Donates.ChangeStatus.Request.JSON JSON = new Donates.ChangeStatus.Request.JSON { Group = _GroupID, Token = _APIToken, Version = _APIVersion };
                 JSON.ID = id;
                 JSON.Status = status;
 
                 string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/donates/change-status", VKPonchikLib.Converters.Serialize.ToJson(JSON));
-                return VKPonchikLib.NULL.Response.JSON.FromJson(ResponseCache);
+                return VKPonchikLib.Response.Default.JSON.FromJson(ResponseCache);
             }
 
             /// <summary>
@@ -283,14 +291,14 @@ namespace VKPonchikLib
             /// <param name="id">ID доната в системе.</param>
             /// <param name="answer">Текст ответа. Для удаления ответа следует передать пустую строку.</param>
             /// <returns></returns>
-            public VKPonchikLib.NULL.Response.JSON Answer(int id, string answer)
+            public VKPonchikLib.Response.Default.JSON Answer(int id, string answer)
             {
                 VKPonchikLib.Donates.Answer.Request.JSON JSON = new Donates.Answer.Request.JSON { Group = _GroupID, Token = _APIToken, Version = _APIVersion };
                 JSON.ID = id;
                 JSON.Answer = answer;
 
                 string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/donates/answer", VKPonchikLib.Converters.Serialize.ToJson(JSON));
-                return VKPonchikLib.NULL.Response.JSON.FromJson(ResponseCache);
+                return VKPonchikLib.Response.Default.JSON.FromJson(ResponseCache);
             }
 
             /// <summary>
@@ -299,14 +307,14 @@ namespace VKPonchikLib
             /// <param name="id">ID доната в системе.</param>
             /// <param name="status">Статус выдачи вознаграждения. not_sended - не вадно; sended - выдано.</param>
             /// <returns></returns>
-            public VKPonchikLib.NULL.Response.JSON ChangeRewardStatus(int id, string status)
+            public VKPonchikLib.Response.Default.JSON ChangeRewardStatus(int id, string status)
             {
                 VKPonchikLib.Donates.ChangeRewardStatus.Request.JSON JSON = new Donates.ChangeRewardStatus.Request.JSON { Group = _GroupID, Token = _APIToken, Version = _APIVersion };
                 JSON.ID = id;
                 JSON.Status = status;
 
                 string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/donates/change-reward-status", VKPonchikLib.Converters.Serialize.ToJson(JSON));
-                return VKPonchikLib.NULL.Response.JSON.FromJson(ResponseCache);
+                return VKPonchikLib.Response.Default.JSON.FromJson(ResponseCache);
             }
         }
         /// <summary>
@@ -336,7 +344,7 @@ namespace VKPonchikLib
             /// <returns></returns>
             public VKPonchikLib.Campaigns.Get.Response.JSON Get(int[] IDs = null)
             {
-                VKPonchikLib.Campaigns.Get.Request.JSON JSON = new Campaigns.Get.Request.JSON { Group = _GroupID, Token = _SecretKey, Version = _APIVersion , IDs = IDs };
+                VKPonchikLib.Request.IDS.JSON JSON = new Request.IDS.JSON { Group = _GroupID, Token = _SecretKey, Version = _APIVersion , IDs = IDs };
 
                 string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/campaigns/get", VKPonchikLib.Converters.Serialize.ToJson(JSON));
                 return VKPonchikLib.Campaigns.Get.Response.JSON.FromJson(ResponseCache);
@@ -348,7 +356,7 @@ namespace VKPonchikLib
             /// <returns></returns>
             public VKPonchikLib.Campaigns.GetActive.Response.JSON GetActive()
             {
-                VKPonchikLib.NULL.Request.JSON JSON = new NULL.Request.JSON { Group = _GroupID, Token = _SecretKey, Version = _APIVersion };
+                VKPonchikLib.Request.Default.JSON JSON = new Request.Default.JSON { Group = _GroupID, Token = _SecretKey, Version = _APIVersion };
 
                 string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/campaigns/get-active", VKPonchikLib.Converters.Serialize.ToJson(JSON));
                 return VKPonchikLib.Campaigns.GetActive.Response.JSON.FromJson(ResponseCache);
@@ -378,12 +386,12 @@ namespace VKPonchikLib
             /// <param name="StartReceived">Собрано за пределами приложения в рублях.</param>
             /// <param name="StartBackers">Кол-во спонсоров пожертвовавших за пределами приложения.</param>
             /// <returns></returns>
-            public VKPonchikLib.NULL.Response.JSON Change(int ID, string title = null, string status = null, long end = 0, int point = 1000, int StartReceived = 0, int StartBackers = 0)
+            public VKPonchikLib.Response.Default.JSON Change(int ID, string title = null, string status = null, long end = 0, int point = 1000, int StartReceived = 0, int StartBackers = 0)
             {
                 VKPonchikLib.Campaigns.Change.Request.JSON JSON = new Campaigns.Change.Request.JSON { Group = _GroupID, Token = _SecretKey, Version = _APIVersion, ID = ID, Title = title, Status = status, End = end, Point = point, StartReceived = StartReceived, StartBackers = StartBackers };
 
                 string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/campaigns/change", VKPonchikLib.Converters.Serialize.ToJson(JSON));
-                return VKPonchikLib.NULL.Response.JSON.FromJson(ResponseCache);
+                return VKPonchikLib.Response.Default.JSON.FromJson(ResponseCache);
             }
 
             /// <summary>
@@ -396,12 +404,92 @@ namespace VKPonchikLib
             /// <param name="Limits">Ограничение кол-во вознаграждений. Если ограничений нет, данное поле должно быть равно 0.</param>
             /// <param name="Status">Статус вознаграждения. public - вознаграждение опубликовано; hidden - вознаграждение скрыто.</param>
             /// <returns></returns>
-            public VKPonchikLib.NULL.Response.JSON ChangeReward(int ID, string Title = null, string Desc = null, int MinDonate = 100, int Limits = 0, string Status = "hidden")
+            public VKPonchikLib.Response.Default.JSON ChangeReward(int ID, string Title = null, string Desc = null, int MinDonate = 100, int Limits = 0, string Status = "hidden")
             {
                 VKPonchikLib.Campaigns.ChangeReward.Request.JSON JSON = new Campaigns.ChangeReward.Request.JSON { Group = _GroupID, Token = _SecretKey, Version = _APIVersion, ID = ID, Title = Title, Desc = Desc, MinDonate = MinDonate, Limits = Limits, Status = Status };
 
                 string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/campaigns/change-reward", VKPonchikLib.Converters.Serialize.ToJson(JSON));
-                return VKPonchikLib.NULL.Response.JSON.FromJson(ResponseCache);
+                return VKPonchikLib.Response.Default.JSON.FromJson(ResponseCache);
+            }
+        }
+        /// <summary>
+        /// API для работы с выплатами
+        /// </summary>
+        public class Payment
+        {
+            /// <summary>
+            /// Набор функций для работы с выплатами
+            /// </summary>
+            /// <param name="GroupID">ID вашей группы</param>
+            /// <param name="SecretKey">Ваш секретный ключ в приложении</param>
+            /// <param name="ConfirmKey">Ваш код подтверждения в приложении</param>
+            public Payment(int GroupID, string SecretKey, string ConfirmKey)
+            {
+                _SecretKey = SecretKey;
+                _ConfirmKey = ConfirmKey;
+                _GroupID = GroupID;
+                // For API UPDATED
+                _APIVersion = 1;
+            }
+
+            /// <summary>
+            /// Получить список заявок на выплату (последние 20 заявок).
+            /// </summary>
+            /// <param name="IDs">Можно передать массив системных ID заявок на выплату для выборки конкрентных заявок на выплату. Если данный параметр не передан, то вернутся 20 последних заявок на выплату.</param>
+            /// <returns></returns>
+            public VKPonchikLib.Payments.Get.Response.JSON Get(int[] IDs = null)
+            {
+                VKPonchikLib.Request.IDS.JSON JSON = new Request.IDS.JSON { Group = _GroupID, Token = _SecretKey, Version = _APIVersion, IDs = IDs };
+
+                string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/payments/get", VKPonchikLib.Converters.Serialize.ToJson(JSON));
+                return VKPonchikLib.Payments.Get.Response.JSON.FromJson(ResponseCache);
+            }
+
+            /// <summary>
+            /// Создать заявку на выплату.
+            /// </summary>
+            /// <param name="System">Платежная система. bank - Банковская карта; qiwi - Qiwi; webmoney - WebMoney; yandex_money - Яндекс.Деньги; mobile - Счет мобильного телефона.</param>
+            /// <param name="Purse">Счет в платежной системе на который будет произведена выплата.</param>
+            /// <param name="Ammount">Сумма выплаты в рублях.</param>
+            /// <returns></returns>
+            public VKPonchikLib.Payments.Create.Response.JSON Create(string System, string Purse, float Ammount)
+            {
+                VKPonchikLib.Payments.Create.Request.JSON JSON = new Payments.Create.Request.JSON { Group = _GroupID, Token = _SecretKey, Version = _APIVersion, System = System, Purse = Purse, Amount = Ammount };
+
+                string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/payments/create", VKPonchikLib.Converters.Serialize.ToJson(JSON));
+                return VKPonchikLib.Payments.Create.Response.JSON.FromJson(ResponseCache);
+            }
+        }
+        /// <summary>
+        /// API для работы с балансом
+        /// </summary>
+        public class Balance
+        {
+            /// <summary>
+            /// Набор функций для работы с балансом
+            /// </summary>
+            /// <param name="GroupID">ID вашей группы</param>
+            /// <param name="SecretKey">Ваш секретный ключ в приложении</param>
+            /// <param name="ConfirmKey">Ваш код подтверждения в приложении</param>
+            public Balance(int GroupID, string SecretKey, string ConfirmKey)
+            {
+                _SecretKey = SecretKey;
+                _ConfirmKey = ConfirmKey;
+                _GroupID = GroupID;
+                // For API UPDATED
+                _APIVersion = 1;
+            }
+
+            /// <summary>
+            /// Получить баланс группы в приложении.
+            /// </summary>
+            /// <returns></returns>
+            public VKPonchikLib.BalanceJSON.Get.Response.JSON Get()
+            {
+                VKPonchikLib.Request.Default.JSON JSON = new Request.Default.JSON { Group = _GroupID, Token = _SecretKey, Version = _APIVersion };
+
+                string ResponseCache = SendPostJSON("https://api.vkdonuts.ru/balance", VKPonchikLib.Converters.Serialize.ToJson(JSON));
+                return VKPonchikLib.BalanceJSON.Get.Response.JSON.FromJson(ResponseCache);
             }
         }
         #endregion

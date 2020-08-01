@@ -7,10 +7,12 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace VKPonchikLib.NULL.Request
+#region Defaults
+
+namespace VKPonchikLib.Request.Default
 {
     /// <summary>
-    /// Основной класс. Используется для "пустых" запросов с указанием авторризационных данных. Рекомендуется только для тестирования!
+    /// Основной класс. Стандартный класс запроса.
     /// </summary>
     public partial class JSON
     {
@@ -43,15 +45,15 @@ namespace VKPonchikLib.NULL.Request
         public static JSON FromJson(string json) => JsonConvert.DeserializeObject<JSON>(json, VKPonchikLib.Converters.Converter.Settings);
     }
 }
-namespace VKPonchikLib.NULL.Response
+namespace VKPonchikLib.Response.Default
 {
     /// <summary>
-    /// Основной класс
+    /// Основной класс. Стандартный класс ответа.
     /// </summary>
     public partial class JSON
     {
         /// <summary>
-        /// Успешность обработки запроса сервером. Пустой ответ со всеми стандартными полями. Может быть использован для получения ответа в запросах без ожидания ответа с данными.
+        /// Успешность обработки запроса сервером.
         /// </summary>
         [JsonProperty("success")]
         public bool Success { get; set; }
@@ -80,7 +82,53 @@ namespace VKPonchikLib.NULL.Response
     }
 }
 
+namespace VKPonchikLib.Request.IDS
+{
+    /// <summary>
+    /// Основной класс. Стандартный класс запроса с указанием списка ID.
+    /// </summary>
+    public partial class JSON
+    {
+        /// <summary>
+        /// VK ID группы.
+        /// </summary>
+        [JsonProperty("group")]
+        public int Group { get; set; }
+
+        /// <summary>
+        /// Секретный токен.
+        /// </summary>
+        [JsonProperty("token")]
+        public string Token { get; set; }
+
+        /// <summary>
+        /// Номер версии api.
+        /// </summary>
+        [JsonProperty("v")]
+        public int Version { get; set; }
+
+        /// <summary>
+        /// Можно передать массив системных ID
+        /// </summary>
+        [JsonProperty("ids", NullValueHandling = NullValueHandling.Ignore)]
+        public int[] IDs { get; set; }
+    }
+
+    public partial class JSON
+    {
+        /// <summary>
+        /// Конвертация строки массива в объект
+        /// </summary>
+        /// <param name="json">JSON массив в виде строки</param>
+        /// <returns></returns>
+        public static JSON FromJson(string json) => JsonConvert.DeserializeObject<JSON>(json, VKPonchikLib.Converters.Converter.Settings);
+    }
+}
+
+#endregion
+
 #region Donates
+
 namespace VKPonchikLib.Donates.Get.Request
 {
     /// <summary>
@@ -251,7 +299,7 @@ namespace VKPonchikLib.Donates.ChangeStatus.Request
         public static JSON FromJson(string json) => JsonConvert.DeserializeObject<JSON>(json, VKPonchikLib.Converters.Converter.Settings);
     }
 }
-// Default response JSON
+// Use VKPonchikLib.Response.Default
 
 namespace VKPonchikLib.Donates.Answer.Request
 {
@@ -301,7 +349,7 @@ namespace VKPonchikLib.Donates.Answer.Request
         public static JSON FromJson(string json) => JsonConvert.DeserializeObject<JSON>(json, VKPonchikLib.Converters.Converter.Settings);
     }
 }
-// Default response JSON
+// Use VKPonchikLib.Response.Default
 
 namespace VKPonchikLib.Donates.ChangeRewardStatus.Request
 {
@@ -351,7 +399,8 @@ namespace VKPonchikLib.Donates.ChangeRewardStatus.Request
         public static JSON FromJson(string json) => JsonConvert.DeserializeObject<JSON>(json, VKPonchikLib.Converters.Converter.Settings);
     }
 }
-// Default response JSON
+// Use VKPonchikLib.Response.Default
+
 #endregion
 
 #region Campaigns
@@ -408,7 +457,7 @@ namespace VKPonchikLib.Campaigns
             /// Собрано за пределами приложения в рублях.
             /// </summary>
             [JsonProperty("start_received")]
-            public int StartReceived { get; set; }
+            public float StartReceived { get; set; }
 
             /// <summary>
             /// Кол-во спонсоров пожертвовавших за пределами приложения.
@@ -420,7 +469,7 @@ namespace VKPonchikLib.Campaigns
             /// Собрано на данный момент в рублях.
             /// </summary>
             [JsonProperty("received")]
-            public int Received { get; set; }
+            public float Received { get; set; }
 
             /// <summary>
             /// Кол-во спонсоров.
@@ -502,48 +551,7 @@ namespace VKPonchikLib.Campaigns
     }
 }
 
-namespace VKPonchikLib.Campaigns.Get.Request
-{
-    /// <summary>
-    /// Основной класс.
-    /// </summary>
-    public partial class JSON
-    {
-        /// <summary>
-        /// VK ID группы.
-        /// </summary>
-        [JsonProperty("group")]
-        public int Group { get; set; }
-
-        /// <summary>
-        /// Секретный токен.
-        /// </summary>
-        [JsonProperty("token")]
-        public string Token { get; set; }
-
-        /// <summary>
-        /// Номер версии api.
-        /// </summary>
-        [JsonProperty("v")]
-        public int Version { get; set; }
-
-        /// <summary>
-        /// Можно передать массив системных ID кампаний для выборки конкрентных кампаний. Если данный параметр не передан, то вернутся 20 последних кампаний.
-        /// </summary>
-        [JsonProperty("ids", NullValueHandling = NullValueHandling.Ignore)]
-        public int[] IDs { get; set; }
-    }
-
-    public partial class JSON
-    {
-        /// <summary>
-        /// Конвертация строки массива в объект
-        /// </summary>
-        /// <param name="json">JSON массив в виде строки</param>
-        /// <returns></returns>
-        public static JSON FromJson(string json) => JsonConvert.DeserializeObject<JSON>(json, VKPonchikLib.Converters.Converter.Settings);
-    }
-}
+// Use VKPonchikLib.Request.IDS
 namespace VKPonchikLib.Campaigns.Get.Response
 {
     /// <summary>
@@ -587,7 +595,7 @@ namespace VKPonchikLib.Campaigns.Get.Response
     }
 }
 
-// Default request JSON
+// Use VKPonchikLib.Request.Default
 namespace VKPonchikLib.Campaigns.GetActive.Response
 {
     /// <summary>
@@ -775,7 +783,7 @@ namespace VKPonchikLib.Campaigns.Change.Request
         /// Собрано за пределами приложения в рублях.
         /// </summary>
         [JsonProperty("start_received", NullValueHandling = NullValueHandling.Ignore)]
-        public int StartReceived { get; set; }
+        public float StartReceived { get; set; }
 
         /// <summary>
         /// Кол-во спонсоров пожертвовавших за пределами приложения.
@@ -794,7 +802,7 @@ namespace VKPonchikLib.Campaigns.Change.Request
         public static JSON FromJson(string json) => JsonConvert.DeserializeObject<JSON>(json, VKPonchikLib.Converters.Converter.Settings);
     }
 }
-// Default response JSON
+// Use VKPonchikLib.Response.Default
 
 namespace VKPonchikLib.Campaigns.ChangeReward.Request
 {
@@ -868,6 +876,247 @@ namespace VKPonchikLib.Campaigns.ChangeReward.Request
         public static JSON FromJson(string json) => JsonConvert.DeserializeObject<JSON>(json, VKPonchikLib.Converters.Converter.Settings);
     }
 }
-// Default response JSON
+// Use VKPonchikLib.Response.Default
+
+#endregion
+
+#region Payments
+
+// Use VKPonchikLib.Request.IDS
+namespace VKPonchikLib.Payments.Get.Response
+{
+    /// <summary>
+    /// Основной класс
+    /// </summary>
+    public partial class JSON
+    {
+        /// <summary>
+        /// Успешность обработки запроса сервером.
+        /// </summary>
+        [JsonProperty("success")]
+        public bool Success { get; set; }
+
+        /// <summary>
+        /// Если запрос выполнен с ошибкой, то будет возвращен код ошибки. Используйте GetErrorCodeInfo(IntErrorCode) для получения информации об ошибке или посмотрите список ошибок: https://vkdonuts.ru/api#error-table
+        /// </summary>
+        [JsonProperty("error", NullValueHandling = NullValueHandling.Ignore)]
+        public int Error { get; set; }
+
+        /// <summary>
+        /// Текстовое сообщение с результатом выполнения запроса.
+        /// </summary>
+        [JsonProperty("msg", NullValueHandling = NullValueHandling.Ignore)]
+        public string Msg { get; set; }
+
+        /// <summary>
+        /// Массив объектов заявок на выплату.
+        /// </summary>
+        [JsonProperty("list", NullValueHandling = NullValueHandling.Ignore)]
+        public List<Payment> List { get; set; }
+    }
+
+    /// <summary>
+    /// Заявка на выплату
+    /// </summary>
+    public partial class Payment
+    {
+        /// <summary>
+        /// ID выплаты в системе.
+        /// </summary>
+        [JsonProperty("id")]
+        public int ID { get; set; }
+
+        /// <summary>
+        /// Статус вывода. created - заявка обрабаывается; ready - заявка выполнена; error - произошла ошибка.
+        /// </summary>
+        [JsonProperty("status")]
+        public string Status { get; set; }
+
+        /// <summary>
+        /// Временная метка по unix (в миллисекундах) даты и времени обработки заявки.
+        /// </summary>
+        [JsonProperty("processed")]
+        public long Processed { get; set; }
+
+        /// <summary>
+        /// Платежная система. bank - Банковская карта; qiwi - Qiwi; webmoney - WebMoney; yandex_money - Яндекс.Деньги; mobile - Счет мобильного телефона.
+        /// </summary>
+        [JsonProperty("system")]
+        public string System { get; set; }
+
+        /// <summary>
+        /// Счет в платежной системе на который заказана выплата.
+        /// </summary>
+        [JsonProperty("purse")]
+        public string Purse { get; set; }
+
+        /// <summary>
+        /// Сумма выплаты в рублях указанная в заявке.
+        /// </summary>
+        [JsonProperty("amount")]
+        public float Amount { get; set; }
+
+        /// <summary>
+        /// VK ID пользователя создавшего заявку.
+        /// </summary>
+        [JsonProperty("user")]
+        public int User { get; set; }
+    }
+
+    public partial class JSON
+    {
+        /// <summary>
+        /// Конвертация строки массива в объект
+        /// </summary>
+        /// <param name="json">JSON массив в виде строки</param>
+        /// <returns></returns>
+        public static JSON FromJson(string json) => JsonConvert.DeserializeObject<JSON>(json, VKPonchikLib.Converters.Converter.Settings);
+    }
+}
+
+namespace VKPonchikLib.Payments.Create.Request
+{
+    /// <summary>
+    /// Основной класс.
+    /// </summary>
+    public partial class JSON
+    {
+        /// <summary>
+        /// VK ID группы.
+        /// </summary>
+        [JsonProperty("group")]
+        public int Group { get; set; }
+
+        /// <summary>
+        /// Секретный токен.
+        /// </summary>
+        [JsonProperty("token")]
+        public string Token { get; set; }
+
+        /// <summary>
+        /// Номер версии api.
+        /// </summary>
+        [JsonProperty("v")]
+        public int Version { get; set; }
+
+        /// <summary>
+        /// Платежная система. bank - Банковская карта; qiwi - Qiwi; webmoney - WebMoney; yandex_money - Яндекс.Деньги; mobile - Счет мобильного телефона.
+        /// </summary>
+        [JsonProperty("system")]
+        public string System { get; set; }
+
+        /// <summary>
+        /// Счет в платежной системе на который будет произведена выплата.
+        /// </summary>
+        [JsonProperty("purse")]
+        public string Purse { get; set; }
+
+        /// <summary>
+        /// Сумма выплаты в рублях.
+        /// </summary>
+        [JsonProperty("amount")]
+        public float Amount { get; set; }
+    }
+
+    public partial class JSON
+    {
+        /// <summary>
+        /// Конвертация строки массива в объект
+        /// </summary>
+        /// <param name="json">JSON массив в виде строки</param>
+        /// <returns></returns>
+        public static JSON FromJson(string json) => JsonConvert.DeserializeObject<JSON>(json, VKPonchikLib.Converters.Converter.Settings);
+    }
+}
+namespace VKPonchikLib.Payments.Create.Response
+{
+    /// <summary>
+    /// Основной класс
+    /// </summary>
+    public partial class JSON
+    {
+        /// <summary>
+        /// Успешность обработки запроса сервером.
+        /// </summary>
+        [JsonProperty("success")]
+        public bool Success { get; set; }
+
+        /// <summary>
+        /// Если запрос выполнен с ошибкой, то будет возвращен код ошибки. Используйте GetErrorCodeInfo(IntErrorCode) для получения информации об ошибке или посмотрите список ошибок: https://vkdonuts.ru/api#error-table
+        /// </summary>
+        [JsonProperty("error", NullValueHandling = NullValueHandling.Ignore)]
+        public int Error { get; set; }
+
+        /// <summary>
+        /// Текстовое сообщение с результатом выполнения запроса.
+        /// </summary>
+        [JsonProperty("msg", NullValueHandling = NullValueHandling.Ignore)]
+        public string Msg { get; set; }
+
+        /// <summary>
+        /// ID выплаты в системе.
+        /// </summary>
+        [JsonProperty("id", NullValueHandling = NullValueHandling.Ignore)]
+        public int ID { get; set; }
+    }
+
+    public partial class JSON
+    {
+        /// <summary>
+        /// Конвертация строки массива в объект
+        /// </summary>
+        /// <param name="json">JSON массив в виде строки</param>
+        /// <returns></returns>
+        public static JSON FromJson(string json) => JsonConvert.DeserializeObject<JSON>(json, VKPonchikLib.Converters.Converter.Settings);
+    }
+}
+
+#endregion
+
+#region GetBalance
+
+// Default request JSON
+namespace VKPonchikLib.BalanceJSON.Get.Response
+{
+    /// <summary>
+    /// Основной класс
+    /// </summary>
+    public partial class JSON
+    {
+        /// <summary>
+        /// Успешность обработки запроса сервером.
+        /// </summary>
+        [JsonProperty("success")]
+        public bool Success { get; set; }
+
+        /// <summary>
+        /// Если запрос выполнен с ошибкой, то будет возвращен код ошибки. Используйте GetErrorCodeInfo(IntErrorCode) для получения информации об ошибке или посмотрите список ошибок: https://vkdonuts.ru/api#error-table
+        /// </summary>
+        [JsonProperty("error", NullValueHandling = NullValueHandling.Ignore)]
+        public int Error { get; set; }
+
+        /// <summary>
+        /// Текстовое сообщение с результатом выполнения запроса.
+        /// </summary>
+        [JsonProperty("msg", NullValueHandling = NullValueHandling.Ignore)]
+        public string Msg { get; set; }
+
+        /// <summary>
+        /// Баланс группы в копейках.
+        /// </summary>
+        [JsonProperty("balance", NullValueHandling = NullValueHandling.Ignore)]
+        public float Balance { get; set; }
+    }
+
+    public partial class JSON
+    {
+        /// <summary>
+        /// Конвертация строки массива в объект
+        /// </summary>
+        /// <param name="json">JSON массив в виде строки</param>
+        /// <returns></returns>
+        public static JSON FromJson(string json) => JsonConvert.DeserializeObject<JSON>(json, VKPonchikLib.Converters.Converter.Settings);
+    }
+}
 
 #endregion
