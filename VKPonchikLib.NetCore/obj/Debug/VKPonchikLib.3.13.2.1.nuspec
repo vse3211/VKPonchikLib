@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>VKPonchikLib</id>
+    <version>3.13.2.1</version>
+    <authors>LonDev</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Версия библиотеки для .Net Core</description>
+    <copyright>https://vk.com/londonist</copyright>
+    <tags>Donuts, донаты</tags>
+    <repository url="https://github.com/vse3211/VKPonchikLib" />
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="Newtonsoft.Json" version="12.0.3" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib.NetCore\bin\Debug\netcoreapp3.1\VKPonchikLib.NetCore.dll" target="lib\netcoreapp3.1\VKPonchikLib.NetCore.dll" />
+  </files>
+</package>

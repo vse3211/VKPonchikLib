@@ -1,0 +1,10 @@
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\bin\Release\VKPonchikLib.xml
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\bin\Release\VKPonchikLib.dll
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\bin\Release\VKPonchikLib.pdb
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\bin\Release\Newtonsoft.Json.dll
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\bin\Release\Newtonsoft.Json.xml
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\obj\Release\VKPonchikLib.csprojAssemblyReference.cache
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\obj\Release\VKPonchikLib.csproj.CoreCompileInputs.cache
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\obj\Release\VKPonchikLib.csproj.CopyComplete
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\obj\Release\VKPonchikLib.dll
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\obj\Release\VKPonchikLib.pdb

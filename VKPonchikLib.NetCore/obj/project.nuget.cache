@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "E+Pek5arjS5vWKWu+VvpCaB0nG9bv9xJ9DGiV+lVBSNkKtizyOCmZG5Fl+I8RGNRRiuAqw0Lt7gmVgAGcKNbEA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Илья\\Documents\\VKPonchikLib\\VKPonchikLib.NetCore\\VKPonchikLib.NetCore.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Илья\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
