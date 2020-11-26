@@ -1,0 +1,699 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>VKPonchikLib</name>
+    </assembly>
+    <members>
+        <member name="T:VKPonchikLib.Converters.Serialize">
+            <summary>
+            Функции сериализации массивов
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.Converters.Serialize.ToJson(System.Object)">
+            <summary>
+            Конвертация в JSON
+            </summary>
+            <param name="self">Объект массива</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.Converters.CustomConverters">
+            <summary>
+            Конвертеры
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.Converters.CustomConverters.ComputeSha256Hash(System.String)">
+            <summary>
+            SHA256 Converter
+            </summary>
+            <param name="rawData">Enter string</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.DonateAnswer.Da">
+            <summary>
+            Основной класс
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Da.Type">
+            <summary>
+            Тип уведомления.
+            Возможные значения:
+            confirmation - подтверждение страницы при настройке адреса сервера в приложении;
+            new_donate - новый донат;
+            payment_status - изменение статуса заявки на выплату.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Da.Donate">
+            <summary>
+            Объект с информацией о донате.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Da.Payment">
+            <summary>
+            Объект с информацией о заявке на выплату.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Da.Group">
+            <summary>
+            VK ID группы.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Da.Hash">
+            <summary>
+            Хеш запроса. Нужен для проверки того, что уведомление получено от нашего сервера, а не от злоумышленника. Подробнее про проверку хеша читайте в https://vkdonuts.ru/api#callback-hash или воспользуйтесь существующим классом.
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.DonateAnswer.Da.FromJson(System.String)">
+            <summary>
+            Конвертация строки массива в объект
+            </summary>
+            <param name="json">JSON массив в виде строки</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.DonateAnswer.Donate">
+            <summary>
+            Объект с информацией о донате.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Donate.Id">
+            <summary>
+            ID донаты в системе.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Donate.Date">
+            <summary>
+            Временная метка по UNIX (в миллисекундах) даты и времени доната.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Donate.Amount">
+            <summary>
+            Сумма доната в рублях.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Donate.Total">
+            <summary>
+            Сумма поступившая на баланс приложения в копейках. Данное поле будет отсутствовать если донат был отправлен через VK Pay, либо импортирован из другого приложения.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Donate.Anonym">
+            <summary>
+            Анонимность доната.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Donate.Msg">
+            <summary>
+            Сообщение прикрепленное к донату.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Donate.Answer">
+            <summary>
+            Ответ администратора группы на донат.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Donate.Vkpay">
+            <summary>
+            Если донат был отправлен через VK Pay, то значение данного поля будет равно true.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Donate.Status">
+            <summary>
+            Статус доната
+            Возможные значения:
+            new - новый донат;
+            public - опубликован;
+            hidden - скрыт.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Donate.User">
+            <summary>
+            VK ID пользователя совершившего донат. Если донаты отправлен анонимно, то значение данного поле будет 0.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Donate.Reward">
+            <summary>
+            Если не было выбрано вознаграждение, то данный объект будет пустым.
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.DonateAnswer.Donate.FromJson(System.String)">
+            <summary>
+            Конвертация строки массива в объект
+            </summary>
+            <param name="json">JSON массив в виде строки</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.DonateAnswer.Reward">
+            <summary>
+            Если не было выбрано вознаграждение, то данный объект будет пустым.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Reward.Id">
+            <summary>
+            ID вознаграждения в системе.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Reward.Title">
+            <summary>
+            Название вознаграждения.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Reward.Status">
+            <summary>
+            Статус выдачи вознаграждения.
+            Возможные значения:
+            not_sended - не выдано;
+            sended - выдано.
+            </summary>
+        </member>
+        <member name="T:VKPonchikLib.DonateAnswer.Payment">
+            <summary>
+            Объект с информацией о заявке на выплату.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Payment.Id">
+            <summary>
+            ID выплаты в системе.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Payment.Status">
+            <summary>
+            Статус вывода. 
+            created - заявка обрабаывается; 
+            ready - заявка выполнена; 
+            error - произошла ошибка.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Payment.Processed">
+            <summary>
+            Временная метка по unix (в миллисекундах) даты и времени обработки заявки.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Payment.System">
+            <summary>
+            Платежная система. 
+            bank - Банковская карта; 
+            qiwi - Qiwi; 
+            webmoney - WebMoney; 
+            yandex_money - Яндекс.Деньги; 
+            mobile - Счет мобильного телефона.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Payment.Purse">
+            <summary>
+            Счет в платежной системе на который заказана выплата.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Payment.Amount">
+            <summary>
+            Сумма выплаты в рублях указанная в заявке.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Payment.User">
+            <summary>
+            VK ID пользователя создавшего заявку.
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.DonateAnswer.Payment.FromJson(System.String)">
+            <summary>
+            Конвертация строки массива в объект
+            </summary>
+            <param name="json">JSON массив в виде строки</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.Request.Default.JSON">
+            <summary>
+            Основной класс. Стандартный класс запроса.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Request.Default.JSON.Group">
+            <summary>
+            VK ID группы.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Request.Default.JSON.Token">
+            <summary>
+            Секретный токен.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Request.Default.JSON.Version">
+            <summary>
+            Номер версии api.
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.Request.Default.JSON.FromJson(System.String)">
+            <summary>
+            Конвертация строки массива в объект
+            </summary>
+            <param name="json">JSON массив в виде строки</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.Request.IDS.JSON">
+            <summary>
+            Основной класс. Стандартный класс запроса с указанием списка ID.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Request.IDS.JSON.Group">
+            <summary>
+            VK ID группы.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Request.IDS.JSON.Token">
+            <summary>
+            Секретный токен.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Request.IDS.JSON.Version">
+            <summary>
+            Номер версии api.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Request.IDS.JSON.IDs">
+            <summary>
+            Можно передать массив системных ID
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.Request.IDS.JSON.FromJson(System.String)">
+            <summary>
+            Конвертация строки массива в объект
+            </summary>
+            <param name="json">JSON массив в виде строки</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.Response.Default.JSON">
+            <summary>
+            Основной класс. Стандартный класс ответа.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Response.Default.JSON.Success">
+            <summary>
+            Успешность обработки запроса сервером.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Response.Default.JSON.Error">
+            <summary>
+            Если запрос выполнен с ошибкой, то будет возвращен код ошибки. Используйте GetErrorCodeInfo(IntErrorCode) для получения информации об ошибке или посмотрите список ошибок: https://vkdonuts.ru/api#error-table
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Response.Default.JSON.Msg">
+            <summary>
+            Текстовое сообщение с результатом выполнения запроса.
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.Response.Default.JSON.FromJson(System.String)">
+            <summary>
+            Конвертация строки массива в объект
+            </summary>
+            <param name="json">JSON массив в виде строки</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.Donates.Get.Request.JSON">
+            <summary>
+            Основной класс
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Get.Request.JSON.Group">
+            <summary>
+            VK ID группы.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Get.Request.JSON.Token">
+            <summary>
+            Секретный токен.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Get.Request.JSON.Version">
+            <summary>
+            Номер версии api.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Get.Request.JSON.Len">
+            <summary>
+            Количество донатов в списке.
+            Максимум 100. По умолчанию 20.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Get.Request.JSON.Offset">
+            <summary>
+            Смещение по выборе донатов
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Get.Request.JSON.StartDate">
+            <summary>
+            Временная метка по UNIX (в миллисекундах). Задает минимальную дату и время выбираемых донатов.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Get.Request.JSON.EndDate">
+            <summary>
+            Временная метка по UNIX (в миллисекундах). Задает максимальную дату и время выбираемых донатов.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Get.Request.JSON.Sort">
+            <summary>
+            Метод сортировки. По умолчанию date. 
+            Возможные значения: 
+            date - сортировка по дате; 
+            amount - сортировка по сумме.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Get.Request.JSON.Reverse">
+            <summary>
+            Направление сортировки. По умолчанию false. 
+            Возможные значения: 
+            false - сортировка по убыванию; 
+            true - сортировка по возрастанию.
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.Donates.Get.Request.JSON.FromJson(System.String)">
+            <summary>
+            Конвертация строки массива в объект
+            </summary>
+            <param name="json">JSON массив в виде строки</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.Donates.Get.Response.JSON">
+            <summary>
+            Основной класс
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Get.Response.JSON.Success">
+            <summary>
+            Успешность обработки запроса сервером.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Get.Response.JSON.Error">
+            <summary>
+            Если запрос выполнен с ошибкой, то будет возвращен код ошибки. Используйте GetErrorCodeInfo(IntErrorCode) для получения информации об ошибке или посмотрите список ошибок: https://vkdonuts.ru/api#error-table
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Get.Response.JSON.Msg">
+            <summary>
+            Текстовое сообщение с результатом выполнения запроса.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Get.Response.JSON.List">
+            <summary>
+            Список донатов.
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.Donates.Get.Response.JSON.FromJson(System.String)">
+            <summary>
+            Конвертация строки массива в объект
+            </summary>
+            <param name="json">JSON массив в виде строки</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.Donates.ChangeStatus.Request.JSON">
+            <summary>
+            Основной класс. Для обработки ответа используйте NULL.Response.JSON
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.ChangeStatus.Request.JSON.Group">
+            <summary>
+            VK ID группы.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.ChangeStatus.Request.JSON.Token">
+            <summary>
+            Секретный токен.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.ChangeStatus.Request.JSON.Version">
+            <summary>
+            Номер версии api.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.ChangeStatus.Request.JSON.ID">
+            <summary>
+            ID доната в системе.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.ChangeStatus.Request.JSON.Status">
+            <summary>
+            Статус доната. Возможные значения: public - опубликован; hidden - скрыт.
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.Donates.ChangeStatus.Request.JSON.FromJson(System.String)">
+            <summary>
+            Конвертация строки массива в объект
+            </summary>
+            <param name="json">JSON массив в виде строки</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.Donates.Answer.Request.JSON">
+            <summary>
+            Основной класс. Для обработки ответа используйте NULL.Response.JSON
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Answer.Request.JSON.Group">
+            <summary>
+            VK ID группы.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Answer.Request.JSON.Token">
+            <summary>
+            Секретный токен.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Answer.Request.JSON.Version">
+            <summary>
+            Номер версии api.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Answer.Request.JSON.ID">
+            <summary>
+            ID доната в системе.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.Answer.Request.JSON.Answer">
+            <summary>
+            Текст ответа. Для удаления ответа следует передать пустую строку.
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.Donates.Answer.Request.JSON.FromJson(System.String)">
+            <summary>
+            Конвертация строки массива в объект
+            </summary>
+            <param name="json">JSON массив в виде строки</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.Donates.ChangeRewardStatus.Request.JSON">
+            <summary>
+            Основной класс. Для обработки ответа используйте NULL.Response.JSON
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.ChangeRewardStatus.Request.JSON.Group">
+            <summary>
+            VK ID группы.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.ChangeRewardStatus.Request.JSON.Token">
+            <summary>
+            Секретный токен.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.ChangeRewardStatus.Request.JSON.Version">
+            <summary>
+            Номер версии api.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.ChangeRewardStatus.Request.JSON.ID">
+            <summary>
+            ID доната в системе.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Donates.ChangeRewardStatus.Request.JSON.Status">
+            <summary>
+            Статус выдачи вознаграждения. not_sended - не вадно; sended - выдано.
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.Donates.ChangeRewardStatus.Request.JSON.FromJson(System.String)">
+            <summary>
+            Конвертация строки массива в объект
+            </summary>
+            <param name="json">JSON массив в виде строки</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.Campaigns.Campaign">
+            <summary>
+            Класс кампании для обработки JSON массива
+            </summary>
+        </member>
+        <member name="T:VKPonchikLib.Campaigns.Campaign.JSON">
+            <summary>
+            Основной класс массива
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Campaign.JSON.Id">
+            <summary>
+            ID кампании в системе.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Campaign.JSON.Title">
+            <summary>
+            Заголовок кампании.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Campaign.JSON.Status">
+            <summary>
+            Статус кампании. draft - черновик; active - активная кампания; archive - кампания архивирована.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Campaign.JSON.Start">
+            <summary>
+            Временная метка по unix (в миллисекундах) начала кампании.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Campaign.JSON.End">
+            <summary>
+            Временная метка по unix (в миллисекундах) окончания кампании.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Campaign.JSON.Point">
+            <summary>
+            Цель по сбору в рублях.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Campaign.JSON.StartReceived">
+            <summary>
+            Собрано за пределами приложения в рублях.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Campaign.JSON.StartBackers">
+            <summary>
+            Кол-во спонсоров пожертвовавших за пределами приложения.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Campaign.JSON.Received">
+            <summary>
+            Собрано на данный момент в рублях.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Campaign.JSON.Backers">
+            <summary>
+            Кол-во спонсоров.
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.Campaigns.Campaign.JSON.FromJson(System.String)">
+            <summary>
+            Конвертация строки массива в объект
+            </summary>
+            <param name="json">JSON массив в виде строки</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.Campaigns.Reward">
+            <summary>
+            Класс вознаграждения для обработки JSON массива
+            </summary>
+        </member>
+        <member name="T:VKPonchikLib.Campaigns.Reward.JSON">
+            <summary>
+            Основной класс массива
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Reward.JSON.Id">
+            <summary>
+            ID вознаграждения в системе.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Reward.JSON.Title">
+            <summary>
+            Название вознаграждения.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Reward.JSON.Desc">
+            <summary>
+            Описание вознаграждения.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Reward.JSON.MinDonate">
+            <summary>
+            Минимальный донат для получения текущего вознаграждения.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Reward.JSON.Limits">
+            <summary>
+            Ограничение кол-во вознаграждений. Если ограничений нет, данное поле не передается.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Reward.JSON.Status">
+            <summary>
+            Статус вознаграждения. public - вознаграждение опубликовано; hidden - вознаграждение скрыто.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Reward.JSON.Backers">
+            <summary>
+            Кол-во спонсоров выбравших данное вознаграждение.
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.Campaigns.Reward.JSON.FromJson(System.String)">
+            <summary>
+            Конвертация строки массива в объект
+            </summary>
+            <param name="json">JSON массив в виде строки</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.Campaigns.Get.Response.JSON">
+            <summary>
+            Основной класс.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Get.Response.JSON.Success">
+            <summary>
+            Успешность обработки запроса сервером.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Get.Response.JSON.Error">
+            <summary>
+            Если запрос выполнен с ошибкой, то будет возвращен код ошибки. Используйте GetErrorCodeInfo(IntErrorCode) для получения информации об ошибке или посмотрите список ошибок: https://vkdonuts.ru/api#error-table
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Get.Response.JSON.Msg">
+            <summary>
+            Текстовое сообщение с результатом выполнения запроса.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.Get.Response.JSON.List">
+            <summary>
+            Список кампаний.
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.Campaigns.Get.Response.JSON.FromJson(System.String)">
+            <summary>
+            Конвертация строки массива в объект
+            </summary>
+            <param name="json">JSON массив в виде строки</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.Campaigns.GetActive.Response.JSON">
+            <summary>
+            Основной класс
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.GetActive.Response.JSON.Success">
+            <summary>
+            Успешность обработки запроса сервером. Пустой ответ со всеми стандартными полями. Может быть использован для получения ответа в запросах без ожидания ответа с данными.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.GetActive.Response.JSON.Error">
+            <summary>
+            Если запрос выполнен с ошибкой, то будет возвращен код ошибки. Используйте GetErrorCodeInfo(IntErrorCode) для получения информации об ошибке или посмотрите список ошибок: https://vkdonuts.ru/api#error-table
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.GetActive.Response.JSON.Msg">
+            <summary>
+            Текстовое сообщение с результатом выполнения запроса.
+            </summary>
+        </member>
+        <member name="P:VKPonchikLib.Campaigns.GetActive.Response.JSON.Campaign">
+            <summary>
+            Объект кампании.
+            </summary>
+        </member>
+        <member name="M:VKPonchikLib.Campaigns.GetActive.Response.JSON.FromJson(System.String)">
+            <summary>
+            Конвертация строки массива в объект
+            </summary>
+            <param name="json">JSON массив в виде строки</param>
+            <returns></returns>
+        </member>
+        <member name="T:VKPonchikLib.Campaigns.GetRewards.Request.JSON">
+            <summary>
+            Основной класс. Использу

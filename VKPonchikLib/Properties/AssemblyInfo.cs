@@ -1,26 +1,18 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System.Resources;
 
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанные со сборкой.
 [assembly: AssemblyTitle("VKPonchikLib")]
-[assembly: AssemblyDescription("Библиотека для обработки и использования API донат сервиса Donuts ВКонтакте")]
+[assembly: AssemblyDescription("Библиотека для обработки и использования API приложения Donuts ВКонтакте")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("LonDev")]
 [assembly: AssemblyProduct("VKPonchikLib")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyCopyright(copyright: "©  2020")]
 [assembly: AssemblyTrademark("Londonist Development Software")]
 [assembly: AssemblyCulture("")]
-
-// Установка значения False для параметра ComVisible делает типы в этой сборке невидимыми
-// для компонентов COM. Если необходимо обратиться к типу в этой сборке через
-// COM, задайте атрибуту ComVisible значение TRUE для этого типа.
-[assembly: ComVisible(false)]
-
-// Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("93731035-cfc9-43af-a95c-8023c36f16c8")]
+[assembly: NeutralResourcesLanguage(cultureName: "ru")]
 
 // Сведения о версии сборки состоят из указанных ниже четырех значений:
 //
@@ -32,5 +24,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("4.13.2.1")]
-[assembly: AssemblyFileVersion("4.13.2.1")]
+[assembly: AssemblyVersion("5.13.2.1")]
+[assembly: AssemblyFileVersion("5.13.2.1")]

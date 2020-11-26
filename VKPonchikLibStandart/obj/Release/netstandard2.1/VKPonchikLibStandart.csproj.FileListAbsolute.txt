@@ -1,9 +1,0 @@
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLibStandart\bin\Release\netstandard2.1\VKPonchikLibStandart.deps.json
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLibStandart\bin\Release\netstandard2.1\VKPonchikLibStandart.dll
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLibStandart\bin\Release\netstandard2.1\VKPonchikLibStandart.pdb
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLibStandart\obj\Release\netstandard2.1\VKPonchikLibStandart.csprojAssemblyReference.cache
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLibStandart\obj\Release\netstandard2.1\VKPonchikLibStandart.AssemblyInfoInputs.cache
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLibStandart\obj\Release\netstandard2.1\VKPonchikLibStandart.AssemblyInfo.cs
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLibStandart\obj\Release\netstandard2.1\VKPonchikLibStandart.csproj.CoreCompileInputs.cache
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLibStandart\obj\Release\netstandard2.1\VKPonchikLibStandart.dll
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLibStandart\obj\Release\netstandard2.1\VKPonchikLibStandart.pdb

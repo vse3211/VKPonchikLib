@@ -285,7 +285,7 @@ namespace VKPonchikLib
                 JSON.Offset = offset;
                 JSON.StartDate = start_date;
                 if (end_date != 0) JSON.EndDate = end_date;
-                else JSON.EndDate = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                else JSON.EndDate = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalMilliseconds;
                 JSON.Sort = sort;
                 JSON.Reverse = reverse;
 

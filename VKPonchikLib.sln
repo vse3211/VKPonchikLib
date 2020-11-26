@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VKPonchikLib", "VKPonchikLib\VKPonchikLib.csproj", "{93731035-CFC9-43AF-A95C-8023C36F16C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VKPonchikLibStandart", "VKPonchikLibStandart\VKPonchikLibStandart.csproj", "{A52A6125-FAD6-40DA-9693-6143B84AD5BF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{93731035-CFC9-43AF-A95C-8023C36F16C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93731035-CFC9-43AF-A95C-8023C36F16C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93731035-CFC9-43AF-A95C-8023C36F16C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A52A6125-FAD6-40DA-9693-6143B84AD5BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A52A6125-FAD6-40DA-9693-6143B84AD5BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A52A6125-FAD6-40DA-9693-6143B84AD5BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A52A6125-FAD6-40DA-9693-6143B84AD5BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
