@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>VKPonchikLib</RootNamespace>
+    <Version>4.13.2.1</Version>
+    <PackageId>VKPonchikLib</PackageId>
+    <Description>Библиотека для обработки и использования API донат сервиса Donuts ВКонтакте</Description>
+    <Company>LonDev</Company>
+    <Product>VKPonchikLib</Product>
+    <Copyright>Copyright ©  2020</Copyright>
+    <Authors>http://app.londev.ru</Authors>
+    <PackageProjectUrl>https://github.com/vse3211/VKPonchikLib</PackageProjectUrl>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/vse3211/VKPonchikLib</RepositoryUrl>
+    <PackageTags>API, VK, Donuts, Пончик, Payments</PackageTags>
+    <PackageReleaseNotes>Обновлена версия API
+Оптимизирован модуль проверки подлинности CallBack запросов</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageIcon>LonDev.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\Pictures\LonDev.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

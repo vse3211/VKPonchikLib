@@ -71,7 +71,13 @@
         /// Сумма доната в рублях.
         /// </summary>
         [JsonProperty("amount", NullValueHandling = NullValueHandling.Ignore)]
-        public float Amount { get; set; }
+        public int Amount { get; set; }
+
+        /// <summary>
+        /// Сумма поступившая на баланс приложения в копейках. Данное поле будет отсутствовать если донат был отправлен через VK Pay, либо импортирован из другого приложения.
+        /// </summary>
+        [JsonProperty("total", NullValueHandling = NullValueHandling.Ignore)]
+        public int Total { get; set; }
 
         /// <summary>
         /// Анонимность доната.

@@ -89,6 +89,11 @@
             Сумма доната в рублях.
             </summary>
         </member>
+        <member name="P:VKPonchikLib.DonateAnswer.Donate.Total">
+            <summary>
+            Сумма поступившая на баланс приложения в копейках. Данное поле будет отсутствовать если донат был отправлен через VK Pay, либо импортирован из другого приложения.
+            </summary>
+        </member>
         <member name="P:VKPonchikLib.DonateAnswer.Donate.Anonym">
             <summary>
             Анонимность доната.
@@ -1142,12 +1147,13 @@
             <param name="bl">Переменная boolean для конвертации в string</param>
             <returns></returns>
         </member>
-        <member name="M:VKPonchikLib.PonchikClient.CallBack.CheckRequest(VKPonchikLib.DonateAnswer.Da,System.String)">
+        <member name="M:VKPonchikLib.PonchikClient.CallBack.CheckRequest(System.String,VKPonchikLib.DonateAnswer.Da,System.String)">
             <summary>
             Проверка запроса на подлинность
             </summary>
-            <param name="DA">Входящий массив</param>
-            <param name="key">Секретный ключ</param>
+            <param name="json">Исходный массив</param>
+            <param name="DA">Конвертированный массив</param>
+            <param name="ke">Секретный ключ</param>
             <returns></returns>
         </member>
         <member name="T:VKPonchikLib.PonchikClient.Donate">

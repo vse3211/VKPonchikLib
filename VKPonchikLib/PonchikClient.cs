@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -102,7 +103,7 @@ namespace VKPonchikLib
             public void Input(string json)
             {
                 VKPonchikLib.DonateAnswer.Da DA = VKPonchikLib.DonateAnswer.Da.FromJson(json);
-                if (CheckRequest(DA, _SecretKey))
+                if (CheckRequest(json, DA, _SecretKey))
                 {
                     //DA API version "1"
                     if (DA.Type == "confirmation")
@@ -159,48 +160,71 @@ namespace VKPonchikLib
             /// <summary>
             /// Проверка запроса на подлинность
             /// </summary>
-            /// <param name="DA">Входящий массив</param>
-            /// <param name="key">Секретный ключ</param>
+            /// <param name="json">Исходный массив</param>
+            /// <param name="DA">Конвертированный массив</param>
+            /// <param name="ke">Секретный ключ</param>
             /// <returns></returns>
-            private bool CheckRequest(VKPonchikLib.DonateAnswer.Da DA, string key)
+            private bool CheckRequest(string json, VKPonchikLib.DonateAnswer.Da DA, string ke)
             {
-                Dictionary<string, string> m = new Dictionary<string, string>();
-                //--- Это можно как-то оптимизировать, но я пока не знаю как.
-                m.Add($"{nameof(DA.Group)}", DA.Group);
-                m.Add($"{nameof(DA.Type)}", DA.Type);
-                //-
-                if (DA.Donate != null && DA.Type == "new_donate")
+                var jObj = (JObject)JsonConvert.DeserializeObject(json);
+                Dictionary<string, object> r1 = ToDictionary(jObj);
+                Dictionary<string, string> r2 = new Dictionary<string, string>();
+                Convert(r1);
+
+                void Convert(Dictionary<string, object> @object, string prevKey = "")
                 {
-                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Id)}", DA.Donate.Id.ToString());
-                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.User)}", DA.Donate.User.ToString());
-                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Date)}", DA.Donate.Date.ToString());
-                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Amount)}", DA.Donate.Amount.ToString());
-                    if (DA.Donate.Msg != null) m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Msg)}", DA.Donate.Msg.ToString());
-                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Anonym)}", BoolToStringFC(DA.Donate.Anonym));
-                    if (DA.Donate.Answer != null) m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Answer)}", DA.Donate.Answer.ToString());
-                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Vkpay)}", BoolToStringFC(DA.Donate.Vkpay));
-                    m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Status)}", DA.Donate.Status.ToString());
-                    if (DA.Donate.Reward != null)
+                    foreach (KeyValuePair<string, object> r in @object)
                     {
-                        m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Reward)}/{nameof(DA.Donate.Reward.Id)}", DA.Donate.Reward.Id.ToString());
-                        m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Reward)}/{nameof(DA.Donate.Reward.Title)}", DA.Donate.Reward.Title.ToString());
-                        m.Add($"{nameof(DA.Donate)}/{nameof(DA.Donate.Reward)}/{nameof(DA.Donate.Reward.Status)}", DA.Donate.Reward.Status.ToString());
+                        string key = r.Key;
+                        dynamic value = r.Value;
+                        if (String.IsNullOrWhiteSpace(prevKey))
+                        {
+                            prevKey = key;
+                        }
+                        else
+                        {
+                            prevKey += $"/{key}";
+                        }
+
+                        if (value.GetType() == typeof(Dictionary<string, object>))
+                        {
+                            Convert(value, prevKey);
+                        }
+                        else
+                        {
+                            if (key != "hash") r2.Add(prevKey, value.ToString());
+                            if (value.GetType() == typeof(bool) && value.GetType() == typeof(bool?) && value.GetType() == typeof(Boolean))
+                            {
+                                r2.Add(prevKey, BoolToStringFC(System.Convert.ToBoolean(value)));
+                            }
+                        }
                     }
                 }
-                //-
-                if (DA.Payment != null && DA.Type == "payment_status")
+
+                Dictionary<string, object> ToDictionary(JObject @object)
                 {
-                    m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.Id)}", DA.Payment.Id.ToString());
-                    m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.Status)}", DA.Payment.Status.ToString());
-                    m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.Processed)}", DA.Payment.Processed.ToString());
-                    m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.System)}", DA.Payment.System.ToString());
-                    m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.Purse)}", DA.Payment.Purse.ToString());
-                    m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.Amount)}", DA.Payment.Amount.ToString());
-                    m.Add($"{nameof(DA.Payment)}/{nameof(DA.Payment.User)}", DA.Payment.User.ToString());
+                    var result = @object.ToObject<Dictionary<string, object>>();
+
+                    var JObjectKeys = (from r in result
+                                       let key = r.Key
+                                       let value = r.Value
+                                       where value.GetType() == typeof(JObject)
+                                       select key).ToList();
+
+                    var JArrayKeys = (from r in result
+                                      let key = r.Key
+                                      let value = r.Value
+                                      where value.GetType() == typeof(JArray)
+                                      select key).ToList();
+
+                    JArrayKeys.ForEach(key => result[key] = ((JArray)result[key]).Values().Select(x => ((JValue)x).Value).ToArray());
+                    JObjectKeys.ForEach(key => result[key] = ToDictionary(result[key] as JObject));
+
+                    return result;
                 }
-                //---
+
                 List<string> keys = new List<string>();
-                foreach (string k in m.Keys) keys.Add(k);
+                foreach (string k in r2.Keys) keys.Add(k);
                 IEnumerable<string> auto = keys.OrderByDescending(s => s);
                 string[] s1 = new string[auto.Count()];
                 int i = auto.Count() - 1;
@@ -212,10 +236,10 @@ namespace VKPonchikLib
                 string s2 = null;
                 foreach (string st in s1)
                 {
-                    if (String.IsNullOrWhiteSpace(s2)) s2 = m[st];
-                    else s2 += $",{m[st]}";
+                    if (String.IsNullOrWhiteSpace(s2)) s2 = r2[st];
+                    else s2 += $",{r2[st]}";
                 }
-                s2 += $",{key}";
+                s2 += $",{ke}";
                 string hash = VKPonchikLib.Converters.CustomConverters.ComputeSha256Hash(s2);
                 if (DA.Hash == hash) return true;
                 else

@@ -1,9 +1,0 @@
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib.NetCore\bin\Debug\netcoreapp3.1\VKPonchikLib.NetCore.deps.json
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib.NetCore\bin\Debug\netcoreapp3.1\VKPonchikLib.NetCore.dll
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib.NetCore\bin\Debug\netcoreapp3.1\VKPonchikLib.NetCore.pdb
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib.NetCore\obj\Debug\netcoreapp3.1\VKPonchikLib.NetCore.AssemblyInfoInputs.cache
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib.NetCore\obj\Debug\netcoreapp3.1\VKPonchikLib.NetCore.AssemblyInfo.cs
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib.NetCore\obj\Debug\netcoreapp3.1\VKPonchikLib.NetCore.csproj.CoreCompileInputs.cache
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib.NetCore\obj\Debug\netcoreapp3.1\VKPonchikLib.NetCore.dll
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib.NetCore\obj\Debug\netcoreapp3.1\VKPonchikLib.NetCore.pdb
-C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib.NetCore\obj\Debug\netcoreapp3.1\VKPonchikLib.NetCore.csprojAssemblyReference.cache
