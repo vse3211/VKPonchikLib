@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>VKPonchikLib</id>
+    <version>5.13.2.1</version>
+    <title>Реализация VK Donuts App API для .NET.</title>
+    <authors>LonDev</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <icon>LonDev.PNG</icon>
+    <projectUrl>https://github.com/vse3211/VKPonchikLib</projectUrl>
+    <description>Реализация VK Donuts App API для .NET.
+      Подробнее на сайте проекта</description>
+    <releaseNotes>### **Актуальная версия библиотеки**
+
+      * [Документация](https://github.com/vse3211/VKPonchikLib/blob/master/README.md)
+      * [Связатся со мной](https://vk.com/londonist)
+      * [LonDev WebSite](https://londev.ru)</releaseNotes>
+    <tags>API VK Donuts Пончик Payments</tags>
+    <repository type="GIT" url="https://github.com/vse3211/VKPonchikLib" />
+    <dependencies>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="Microsoft.CSharp" version="4.7.0" exclude="Build,Analyzers" />
+        <dependency id="NetFx.Extensions.DependencyInjection" version="[2.2.0]" exclude="Build,Analyzers" />
+        <dependency id="NetFx.Extensions.Logging.Abstractions" version="[2.2.0]" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.3" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.6.1">
+        <dependency id="Microsoft.CSharp" version="4.7.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="2.1.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.1.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.3" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net5.0">
+        <dependency id="Microsoft.CSharp" version="4.7.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.3" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Microsoft.CSharp" version="4.7.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="2.1.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.1.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.3" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework=".NETFramework4.5" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework=".NETFramework4.5" />
+      <frameworkAssembly assemblyName="System.Data.DataSetExtensions" targetFramework=".NETFramework4.5" />
+      <frameworkAssembly assemblyName="System.Data" targetFramework=".NETFramework4.5" />
+      <frameworkAssembly assemblyName="System" targetFramework=".NETFramework4.5" />
+      <frameworkAssembly assemblyName="System.Net.Http" targetFramework=".NETFramework4.5" />
+      <frameworkAssembly assemblyName="System.Xml" targetFramework=".NETFramework4.5" />
+      <frameworkAssembly assemblyName="System.Xml.Linq" targetFramework=".NETFramework4.5" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="C:\Users\Илья\Documents\VKPonchikLib\Build\Debug\net45\VKPonchikLib.dll" target="lib\net45\VKPonchikLib.dll" />
+    <file src="C:\Users\Илья\Documents\VKPonchikLib\Build\Debug\net45\VKPonchikLib.xml" target="lib\net45\VKPonchikLib.xml" />
+    <file src="C:\Users\Илья\Documents\VKPonchikLib\Build\Debug\net461\VKPonchikLib.dll" target="lib\net461\VKPonchikLib.dll" />
+    <file src="C:\Users\Илья\Documents\VKPonchikLib\Build\Debug\net461\VKPonchikLib.xml" target="lib\net461\VKPonchikLib.xml" />
+    <file src="C:\Users\Илья\Documents\VKPonchikLib\Build\Debug\net5.0\VKPonchikLib.dll" target="lib\net5.0\VKPonchikLib.dll" />
+    <file src="C:\Users\Илья\Documents\VKPonchikLib\Build\Debug\net5.0\VKPonchikLib.xml" target="lib\net5.0\VKPonchikLib.xml" />
+    <file src="C:\Users\Илья\Documents\VKPonchikLib\Build\Debug\netstandard2.0\VKPonchikLib.dll" target="lib\netstandard2.0\VKPonchikLib.dll" />
+    <file src="C:\Users\Илья\Documents\VKPonchikLib\Build\Debug\netstandard2.0\VKPonchikLib.xml" target="lib\netstandard2.0\VKPonchikLib.xml" />
+    <file src="C:\Users\Илья\Documents\VKPonchikLib\tools\LonDev.PNG" target="\LonDev.PNG" />
+    <file src="C:\Users\Илья\Documents\VKPonchikLib\LICENCE" target="\LICENCE" />
+  </files>
+</package>

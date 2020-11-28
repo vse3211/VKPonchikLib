@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net45;net461;netstandard2.0;net5.0</TargetFrameworks>
     <AssemblyName>VKPonchikLib</AssemblyName>
-    <VersionPrefix>5.13.2.1</VersionPrefix>
+    <VersionPrefix>6.13.2.1</VersionPrefix>
     <VersionSufix>
     </VersionSufix>
     <NeutralLanguage>ru-RU</NeutralLanguage>
@@ -20,11 +20,9 @@
     <RepositoryType>GIT</RepositoryType>
     <PackageTags> API;VK;Donuts;Пончик;Payments</PackageTags>
     <PackageReleaseNotes>
-      ### **Актуальная версия библиотеки**
-
-      * [Документация](https://github.com/vse3211/VKPonchikLib/blob/master/README.md)
-      * [Связатся со мной](https://vk.com/londonist)
-      * [LonDev WebSite](https://londev.ru)
+      * Документация: https://github.com/vse3211/VKPonchikLib/blob/master/README.md
+      * Связатся со мной: https://vk.com/londonist
+      * LonDev WebSite: https://londev.ru
     </PackageReleaseNotes>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>

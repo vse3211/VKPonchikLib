@@ -737,7 +737,7 @@
     "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
-    "version": "5.13.2.1",
+    "version": "6.13.2.1",
     "restore": {
       "projectUniqueName": "C:\\Users\\Илья\\Documents\\VKPonchikLib\\VKPonchikLib\\VKPonchikLib.csproj",
       "projectName": "VKPonchikLib",

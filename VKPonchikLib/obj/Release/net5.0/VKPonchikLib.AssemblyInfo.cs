@@ -11,7 +11,7 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("5.13.2.1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("6.13.2.1")]
 [assembly: System.Reflection.AssemblyMetadataAttribute("RepositoryUrl", "https://github.com/vse3211/VKPonchikLib")]
 
 // Создано классом WriteCodeFragment MSBuild.

@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "+Bd5jj7uR/foGBchPsb6qzl/goAi60FLDR3wTGeRR1KxQSlVUWQH/P+wWvJrPp9QcHMWEsM8pAa3tNd8qjThfA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Илья\\Documents\\VKPonchikLib\\VKPonchikLib.Tests.GUI\\VKPonchikLib.Tests.GUI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Илья\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
+    "C:\\Users\\Илья\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\2.1.0\\microsoft.extensions.dependencyinjection.2.1.0.nupkg.sha512",
+    "C:\\Users\\Илья\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\2.1.0\\microsoft.extensions.dependencyinjection.abstractions.2.1.0.nupkg.sha512",
+    "C:\\Users\\Илья\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\2.1.0\\microsoft.extensions.logging.abstractions.2.1.0.nupkg.sha512",
+    "C:\\Users\\Илья\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

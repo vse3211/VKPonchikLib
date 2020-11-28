@@ -173,30 +173,27 @@ namespace VKPonchikLib
 
                 void Convert(Dictionary<string, object> @object, string prevKey = "")
                 {
+                    if (!String.IsNullOrWhiteSpace(prevKey))
+                    {
+                        prevKey += "/";
+                    }
                     foreach (KeyValuePair<string, object> r in @object)
                     {
                         string key = r.Key;
                         dynamic value = r.Value;
-                        if (String.IsNullOrWhiteSpace(prevKey))
-                        {
-                            prevKey = key;
-                        }
-                        else
-                        {
-                            prevKey += $"/{key}";
-                        }
+                        
 
                         if (value.GetType() == typeof(Dictionary<string, object>))
                         {
-                            Convert(value, prevKey);
+                            Convert(value, key);
                         }
                         else
                         {
-                            if (key != "hash") r2.Add(prevKey, value.ToString());
-                            if (value.GetType() == typeof(bool) && value.GetType() == typeof(bool?) && value.GetType() == typeof(Boolean))
+                            if (value.GetType() == typeof(bool) || value.GetType() == typeof(bool?) || value.GetType() == typeof(Boolean))
                             {
-                                r2.Add(prevKey, BoolToStringFC(System.Convert.ToBoolean(value)));
+                                r2.Add(prevKey + $"{key}", BoolToStringFC(System.Convert.ToBoolean(value)));
                             }
+                            else if (key != "hash") r2.Add(prevKey + $"{key}", value.ToString());
                         }
                     }
                 }

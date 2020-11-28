@@ -1,0 +1,11 @@
+C:\Users\Илья\Documents\VKPonchikLib\Build\Debug\net461\VKPonchikLib.dll
+C:\Users\Илья\Documents\VKPonchikLib\Build\Debug\net461\VKPonchikLib.pdb
+C:\Users\Илья\Documents\VKPonchikLib\Build\Debug\net461\VKPonchikLib.xml
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\obj\Debug\net461\VKPonchikLib.AssemblyInfoInputs.cache
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\obj\Debug\net461\VKPonchikLib.AssemblyInfo.cs
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\obj\Debug\net461\VKPonchikLib.csproj.CoreCompileInputs.cache
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\obj\Debug\net461\PlatformCompat.Analyzers.settings
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\obj\Debug\net461\VKPonchikLib.csproj.CopyComplete
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\obj\Debug\net461\VKPonchikLib.dll
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\obj\Debug\net461\VKPonchikLib.pdb
+C:\Users\Илья\Documents\VKPonchikLib\VKPonchikLib\obj\Debug\net461\VKPonchikLib.csprojAssemblyReference.cache
